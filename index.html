@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Author" content="3dh"/>
+<title>Tajemne Oblicze Świata</title>
+<script type="text/javascript">
+function getUrlVars(){return location.search.substring(1).split(',');}
+var u1;
+if(document.location.search.length){u1=getUrlVars();}
+else{u1=[0,0,0,0,0];}
+var u1nw=[0,0,0,0,0];
+var p=Number(u1[0]),
+dmg=Number(u1[1]),
+wyt=' I I I I I I ',
+ulen=u1.length,
+t1=new Array();
+
+var item = new Array();
+item[2]=' dziwny list';
+item[3]=' <span style="cursor:help;" title="Po lewej stronie wyryto coś, co chyba jest ożywionym szkieletem niedźwiedzia, machającego lewą łapą, po prawej zaś młodego orła.">bransoleta taksówkarza</span>';
+item[4]=' <span style="cursor:help;" title="Po lewej stronie wyryto coś, co chyba jest ożywionym szkieletem niedźwiedzia, machającego lewą łapą, po prawej zaś młodego orła.">bransoleta dziewczyny</span>';
+
+function rzut(obj,nr){
+if(nr>0){
+obj.setAttribute('data-rzut',nr-1);
+document.getElementById('wyn'+p).innerHTML+=(Math.floor(Math.random()*2)===0)?' orzeł':' reszka';
+}
+}
+
+function load(){
+if(u1[1]===0){wyt=' I I I I I I ';}
+if(u1[1]==1){wyt=' I I I I I ';}
+if(u1[1]==2){wyt=' I I I I ';}
+if(u1[1]==3){wyt=' I I I ';}
+if(u1[1]==4){wyt=' I I ';}
+if(u1[1]==5){wyt=' I ';}
+if(u1[1]==6){wyt='';}
+checkItems(u1);
+
+document.getElementById('karta').innerHTML='<p>Wytrzymałość: '+wyt+'</p><p>Ekwipunek: '+t1+'</p><p><a href=\"?'+u1+'\">Zakładka</a></p>';
+}
+
+function checkItems(u1){
+for(x=2;x<=ulen;++x){
+if(u1[x]==1){
+t1.push(item[x]);
+t1.removeDuplicates();
+}
+}
+}
+
+Array.prototype.removeDuplicates=function(){
+var input=this,
+hashObject=new Object();
+for(var i=input.length-1;i>=0;--i){
+	var currentItem=input[i]; 
+	if (hashObject[currentItem]===true){
+	input.splice(i,1);
+	}
+    hashObject[currentItem]=true;
+}
+return input;
+};
+
+function zp(st,nw){
+document.title='Tajemne Oblicze Świata - '+nw;
+document.getElementById('p'+nw).style.display='block';
+document.getElementById('p'+st).style.display='none';
+window.scrollTo(0,0);
+p=Number(nw);
+
+if(p==2){++dmg;}
+if(p==24){dmg=dmg+2;}
+if(p==35){u1nw[3]=1;}
+if(p==89){u1nw[4]=1;}
+
+u1nw[0]=p;
+u1nw[1]=dmg;
+for(var i=2;i<=u1.length;++i){
+if(u1[i]!=u1nw[i]){u1nw[i]=1;}
+}
+u1=u1nw;
+load();
+}
+
+var max=0;
+function walka(obj,kol){
+++max;
+var co=(Math.floor(Math.random()*2)===0)?' orzeł':' reszka',
+inf=document.getElementById('wyn'+p),
+wyn=document.getElementById('wyn'+p+'b'),
+dw=document.getElementById('dwyt'),
+tw=document.getElementById('twyt');
+
+if(Number(dw.innerHTML)>1 && Number(tw.innerHTML)>0){
+if(kol==1){
+	if(max<=2 && co==' orzeł'){
+	wyn.innerHTML+=co;
+		if(max==2 && co==' orzeł'){
+		dw.innerHTML=Number(dw.innerHTML)-1;
+		wyn.innerHTML+=' - dresiarz traci 1 punkt wytrzymałości';
+		}
+	}
+	else if(max<=2 && co==' reszka'){
+	wyn.innerHTML+=co+'...';
+	max=2;
+	}
+	else{
+	inf.innerHTML='Kolej dresa. ';
+	wyn.innerHTML=':';
+	obj.setAttribute('data-walka',0);
+	max=0;
+	}
+}else{
+	if(max<=1 && co==' reszka'){
+	wyn.innerHTML+=co+' - tracisz 1 punkt wytrzymałości';
+	tw.innerHTML=Number(tw.innerHTML)-1;
+	dmg++;
+	u1[1]=dmg;
+	load();
+	}
+	else if(max<=1 && co==' orzeł'){
+	wyn.innerHTML+=co+'...';
+	}
+	else{
+	inf.innerHTML='Twoja kolej. ';
+	wyn.innerHTML=':';
+	obj.setAttribute('data-walka',1);
+	max=0;
+	}
+}
+}
+}
+</script>
+<style type="text/css">
+html,body{position:absolute;width:100%;margin:0 auto;min-width:400px;}
+html,body,.b0{font:16px "Courier New",serif;color:#b6b6b6;padding:0;}
+html,body,#karta{background-color:#484848;}
+img{border:none;float:left;}
+#inf,.linia{border-bottom-style:solid;border-width:1px;}
+a:link,a:visited,.b0:hover{color:#b6b6b6;background-color:#484848;text-decoration:none;}
+a:hover,a:active,.b0{color:#484848;background-color:#b6b6b6;text-decoration:none;}
+#txt{position:relative;width:92%;height:100%;top:0;padding:0 4%;padding-bottom:132px;margin: 0 auto;overflow:auto;}
+#karta{position:fixed;bottom:0;border-top-style:solid;border-width:1px;width:92%;}
+[id^="p"],#zawartosc{display:none;}
+[id^="p"],.wn,.wiz{margin:20px 0;clear:both;}
+[id^="p"] p{text-indent:3em;margin:4px 0;}
+h1,h2,h3,.wn{text-align:center;}
+.b0{text-indent:0;cursor:pointer;border:none;}
+.pr{font-weight:bold;}
+.wiz{font-style:italic;}
+
+@media all and (max-width:420px){
+#karta{position:absolute;}
+}
+@media all and (max-height:580px){
+#inf{display:none;}
+}
+@media all and (max-width:580px){
+#inf{display:none;}
+img{width:40%;height:40%;}
+}
+</style>
+</head>
+<body>
+<div id="txt">
+<div id="inf">
+<p><a href="http://masz-wybor.com.pl/">„Tajemne Oblicze Świata” - Mikołaj Kołyszko</a></p>
+</div>
+<div id="p0">
+<div style="margin:0 0 800px 0;">
+<h2>Mikołaj Kołyszko</h2>
+<h1><i>Tajemne Oblicze Świata</i></h1>
+<div class="wn"><i><a href="https://validator.w3.org/nu/?doc=https%3A%2F%2Fdrrak.github.io%2Fkosmolot.podroznik%2F">html, javascript: 3dh</a> (gmail: 3dh.net)</i></div>
+</div>
+<div style="text-align:right;margin:20px 0;clear:both;"><p><i>Tę pierwszą napisaną przeze mnie grę paragrafową dedykuję wszystkim moim</i></p>
+<p><i>przyjaciołom, dla których miałem okazję prowadzić wszelakie gry</i></p>
+<p><i>fabularne, a w szczególności:</i></p>
+<p><i>Zbyszkowi Tenerowiczowi, Arkowi Ostrycharzowi, Dominice Borkowskiej, Kasi</i></p>
+<p><i>Hajduk, Kubie Eichlerowi, Pawłowi Czapiewskiemu, Markowi Janikowi,</i></p>
+<p><i>Dagmarze Kuźmińskiej, a także Paulinie Freitag, by dalej pragnęła zgłębiać</i></p>
+<p><i>tajemny świat RPG.</i></p></div>
+<p class="linia"></p><br>
+<h2>Prolog</h2>
+<p>Witaj Drogi Adepcie!</p><br>
+<p>Oddaję Ci owoc pracy mych rąk. Mam nadzieję, że przygoda i prawdy w nim zawarte uraczą Twój umysł i odkryją fakty wzbogacające Twą duszę.</p>
+<p>Jeśli masz wątpliwości, jak ową książkę czytać, posłuchaj mych wskazówek.</p>
+<p>Oto pierwsza. Dzieło, które masz przed sobą nie jest zwykłą mini-powieścią czy opowiadaniem. Nie czyta się go od pierwszej do ostatniej strony, lecz od paragrafu do paragrafu. Na końcu każdego z nich zostajesz obarczony ciężarem decyzji, która wpłynie na Twą dalszą historię i albo zaprowadzi Cię do szczęśliwego końca, albo na zatracenie. Jest kilka sposobów ukończenia powieście; w tym dwa z nich w miarę bezpieczne, inne zaś oznaczają zgubę.</p>
+<p>Druga wskazówka. Nie czytasz opowieści o jakimś obcym człowieku, nie jesteś tu widzem. Jesteś osobą, która żyje w przedstawionym świecie i w nim podróżuje.</p>
+<p>Trzecia wskazówka. By zacząć lekturę musi Twój umysł odrzucić na chwilę swą cielesną powłokę i wcielić się w człowieka żyjącego w świecie tej opowieści. Od teraz Ty nim jesteś.</p>
+<p>Czwarta wskazówka. KARTA POSTACI może być Ci bardzo użyteczna. Na niej jest miejsce, gdzie możesz wpisywać znalezione w czasie gry przedmioty. Nie jest ich dużo, lecz każdy na wagę złota. Bacz, byś nie zapomniał wpisać przedmiotu, który znajdziesz, gdyż przez to czekać Cię może płacz i zgrzytanie zębów. Z tyłu karty masz też napisane słowo „wytrzymałość”, a pod nim kilka kresek. Za każdym razem, gdy odniesiesz jakąś ranę, skreśl tyle kresek, ile WT(współczynników wytrzymałości) zostało Ci odjęte.</p>
+<p>Piąta wskazówka. Choć Tajemne Oblicze Świata możesz czytać na komputerze, zastanów się czy warto. Nie do końca taka jest idea gier książkowych. Lepiej wydrukuj ją i w nocnej ciszy, kiedy nikt widzieć Cię nie będzie, wyjmij z ukrycia, zapal świeczkę, przygotuj monetę i rozpocznij podróż. Niech mrok i cisza będą Twoimi towarzyszami. O wiele lepiej doświadczysz tego, co przeżył Twój awatar.</p>
+<p>Kimże ON jest? To przeciętny człowiek... a może i nie? Pracuje dzień w dzień w firmie komputerowej, by zarobić na nieszczęsny żywot na tym padole łez. Zdolny, inteligenty, acz trochę chuderlawy. Pewnego dnia znajduje przed swym domem dziwną wiadomość... i od tego momentu Ty się nim stajesz i zadecydujesz, jak potoczą się jego losy.</p>
+<p>Mało jest fikcji w moim dziele. Informacje w nim zawarte pochodzą z wiedzy przeze mnie nabytej. Studiuję nauki tajemne i wiedzę o religiach wszelaką, stąd możesz być pewien, że niewiele tu moich wymysłów. Gdy skończysz książkę i wierzyć mi nie będziesz - napisz (magazyn.masz.wybor&#64;gmail.com), a polecę Ci dzieła, gdzie prawdy o których mówię, zostały opisane lub podeślę któreś z moich żakowskich opracowań, gdzie w skrócie dziwne zjawiska opisuję.</p>
+<br><p class="linia"></p><br>
+<div class="wiz"><p title="H. P. Lovecraft, Zew Cthulhu.">Jakimże człowiek potrafi być ignorantem… „Wydaje mi się, że największym dobrodziejstwem na tym świecie jest fakt, że umysł ludzki nie jest w stanie skorelować całej swej istoty. Żyjemy na spokojnej wyspie ignorancji, pośród mórz nieskończoności i wcale nie jest powiedziane, że w swej podróży zawędrujemy daleko.”</p>
+<p>Słowa oszalałego samotnika odbijają się w naszych wspólnych głowach. Tak naprawdę żyjemy w pełnym grozy świecie - koszmar otacza nas zewsząd, a nasza natura jest nim przesiąknięta. Płyniemy w nim, oddychamy nim, pijemy i spożywamy go. Nasze umysły bronią się przed świadomością tego przerażającego faktu, tworząc idee świata nieistniejącego, lepszego, żeby tylko odwrócić naszą uwagę od tego, który rzeczywiście zamieszkujemy. Gdybyś tylko przyjrzał się historii życia swojego przyjaciela, ojca, matki, sąsiada czy nawet pierwszej lepszej napotkanej istoty, zrozumiałbyś tak wiele… Wyraziłeś życzenie poznania prawdy, tak? Całej prawdy, tak? No dobrze, spełnię Twoją wolę w ułamku. TYLKO W UŁAMKU. Inaczej świadomość koszmaru mógłby Cię zabić, Przyjacielu.</p></div>
+<div class="wn"><button class="b0" data-np="1">[001]</button></div>
+</div>
+
+<div id="p1">
+<p class="pr">1</p>
+<p>Stoisz na ganku przed swoim domem i patrzysz na tajemniczy list. Znalazłeś go przed wejściem. Śliski papier był pokryty delikatną warstwą szronu, więc całkiem możliwe, że zostawiono go tutaj jeszcze w nocy. Kto mógłby napisać do Ciebie coś tak dziwnego? Może to znów apel jakichś sekciarskich popaprańców? Ha! Być może takie świstki są na ganku każdego domu?</p>
+<p>Jesteś ciepło ubrany i gotowy do wyjścia do pracy. Zimny listopadowy wiatr niczym chluśnięcie lodowatej wody orzeźwia Twoją twarz.</p>
+<p>Otrząsasz się z zamyślenia. Spoglądasz odruchowo na zegarek. Ciekłokrystaliczny wyświetlacz elektronicznej chińskiej tandety dumnie nazywanej przez sprzedawcę zegarkiem wskazuje godzinę: 7:21. Jeszcze chwila a spóźnisz się na tramwaj o 7:26, a wtedy w ogóle spóźnisz się do pracy. W firmie komputerowej, w której pracujesz nie tolerują tego, a niełatwo dostać się z przedmieścia na starówkę.</p>
+<br><p>Co robisz?</p><br>
+<p>Biegniesz co sił na tramwaj, chowając list do kieszeni [dopisz „dziwny list” do ekwipunku”]. <button class="b0" data-npa="2">[002]</button></p>
+<p>Biegniesz na tramwaj, wyrzucając list po drodze. <button class="b0" data-np="2">[002]</button></p>
+</div>
+
+<div id="p2">
+<p class="pr">2</p>
+<p>Szybko zerwałeś się do biegu. Zimne powietrze boleśnie kuje płuca. Po chwili łapiesz zadyszkę i zaczynasz kaszleć. Mimo to biegniesz dalej. Wiesz, że każda sekunda jest ważna – najwyżej odpoczniesz w tramwaju. Nagle tracisz równowagę i BUUUM [-1 WT; skreśl jedną kreskę za napisem „wytrzymałość” na karcie postaci - ostatnia kartka].</p>
+<p>Leżysz na ziemi i starasz się zrozumieć, co się stało. Ach tak! Poślizgnąłeś się na oszronionym trawniku. Dotykasz swojej głowy i czujesz ciepłą, lepką substancję sączącą się znad Twojej skroni. To krew.</p>
+<p>Uświadamiasz sobie, że jesteś już tuż przed przystankiem. Widzisz nadjeżdżający tramwaj. Jeśli chcesz dokończyć swoją gonitwę zdążysz jeszcze do niego wsiąść. Ból głowy jest jednak silny, lekko kręci Ci się w głowie... Może jednak lepiej nie ryzykować i pojechać do szpitala?</p>
+<br><p>Co robisz?</p><br>
+<p>Dzwonię po karetkę. Jeśli kierownictwo dalej chce być bandą bezdusznych skurwieli, to niech mnie zwolnią – proszę bardzo! <button class="b0" data-np="88">[088]</button></p> 
+<p>Biegnę na tramwaj. Obecnie ta praca jest dla mnie jedynym źródłem utrzymania. Jeśli nie dotrę na czas, prawdopodobnie mnie zwolnią (jestem młody stażem, a kierownictwo do takich jak ja nie jest przychylnie nastawione). <button class="b0" data-np="3">[003]</button></p>
+</div>
+
+<div id="p3">
+<p class="pr">3</p>
+<p>Wskakujesz do tramwaju w ostatniej chwili, akurat gdy odezwał się dzwonek obwieszczający zamknięcie drzwi. Jesteś w środku, udało się. Uff… jaka ulga. Tramwaj ruszył z miejsca, możesz odpocząć. Jest dość tłoczno. Spostrzegasz, że ludzie patrzą na Ciebie jakby z litością i obawą. Czego oni chcą? Ach tak! Rana! Szukasz w kieszeniach chusteczek higienicznych, lecz nie znajdujesz żadnej. Cholera.</p>
+<p>Zaraz, zaraz…</p>
+<br><p>Masz list. Próbujesz nim zatamować krwotok. <button class="b0" data-np="4">[004]</button></p>
+<p>Masz list i nie próbujesz zatamować nim krwotoku. <button class="b0" data-np="5">[005]</button></p>
+<p>Nie masz listu. Próbujesz zdusić krwawienie dłonią. <button class="b0" data-np="6">[006]</button></p>
+</div>
+
+<div id="p4">
+<p class="pr">4</p>
+<p>Wyjmujesz wymiętą kartkę. No cóż, skoro nie masz niczego innego… trzeba sobie jakoś radzić. Przykładasz ją do skroni. Papier jest trochę szorstki, ale nie zadaje dotkliwego bólu. Nie na długo jednak się przyda - jest słabo higroskopijny. Już teraz kapią spod niego malutkie kropelki krwi.</p>
+<p>Ktoś szturcha Cię w ramię. To jakaś poczciwa babcina. Podaje Ci czystą, płócienną chustkę. Uśmiecha się życzliwie, gdy jej dziękujesz. Patrzysz na zakrwawiony list i nagle pod tekstem krew zlewa się w jakiś wzór, by po chwili ułożyć się w napis:</p>
+<div class="wiz"><p>Zapamiętaj wszystko co zobaczysz.</p>
+<p>Nic tu nie jest bez znaczenia.</p>
+<p>Zastanów się nad tym i PAMIĘTAJ o tym co ważne.</p></div>
+<p>Patrzysz zszokowany na kartkę i po chwili czujesz zawroty głowy…</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="7">[007]</button>.</p>
+</div>
+
+<div id="p5">
+<p class="pr">5</p>
+<p>Wyciągasz list z kieszeni… nie, to nie jest dobry materiał do zatrzymania tego względnie niewielkiego krwotoku. Rozglądasz się rozpaczliwie po twarzach ludzi w tramwaju. Nagle wszyscy dookoła zaczynają sprawiać wrażenie, jakby Cię nie widzieli, a Ty przestałeś być atrakcją tego zwykłego, chłodnego listopadowego ranka.</p>
+<p>Znienacka przed Twoim nosem pojawia się paczka chusteczek higienicznych, którą trzyma młoda dziewczyna, nieśmiało się do Ciebie uśmiechając. Dziękujesz, odwzajemniając uśmiech, i przykładasz ten bardziej chłonny materiał do obolałej głowy.</p>
+<p>Świat przed Twoimi oczyma zaczyna się kręcić…</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="7">[007]</button>.</p>
+</div>
+
+<div id="p6">
+<p class="pr">6</p>
+<p>No tak, pech nie przestaje Cię dziś prześladować. Przykładasz dłoń do krwawiącej głowy. Nagle czujesz, jak ktoś delikatnie stuka Cię w przedramię. Zauważasz niskiego jegomościa ubranego w długi jesienny płaszcz. Mężczyzna marszczy czoło, patrząc na Ciebie. Jego bystre oczy spoglądające zza okularów zdają się właśnie wypisywać naganę, za to co robisz.</p>
+<p><i>- Proszę tego nie robić. Ma pan brudne dłonie! Proszę, proszę wziąć tę chustę. Radziłbym panu udać się do lekarza. Rana nie wydaje się poważna, ale kto wie... O, mój przystanek. Do widzenia panu. Radzę bardziej na siebie uważać.</i></p>
+<p>W międzyczasie przyłożyłeś sobie chustę do obolałej głowy. Dobrze, że są jeszcze tacy mili ludzie.</p>
+<p>Spoglądasz na swoje ręce… są całe brudne od ziemi i krwi.</p>
+<p>Nagle czujesz zawroty głowy.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="7">[007]</button>.</p>
+</div>
+
+<div id="p7">
+<p class="pr">7</p>
+<p>Musiałeś oburącz chwycić się za znajdujący się obok drążek. Widzisz wszystko jakby przez mgłę. Zauważasz, że zrobiło się znacznie tłoczniej, niż przed chwilą. No tak, to normalne kiedy tramwaj dojeżdża do centrum. Ale zaraz! Tam dalej, za tym łańcuchem (ŁAŃCUCHEM?!) jest bardzo luźno, są nawet wolne miejsca. Cholera, coś tu jest bardzo nie tak. O co chodzi? Do łańcuchów przyczepiona jest tabliczka. Wyostrzasz wzrok i widzisz napis: <i><b>nur für Deutsche</b></i>. Co tu się dzieje?</p>
+<p>Patrzysz na chłopaka stojącego obok Ciebie. Ubrany jest jakoś dziwnie… biednie… niemodnie. Jego szare oczy patrzą z nienawiścią na oddzieloną, luźniejszą część tramwaju. Ma zaciśnięte wargi. Jedną rękę trzyma w kieszeni kurtki, drugą w kieszeni spodni. O Boże! Z nogawki jego spodni wystaje lufa karabinu!</p>
+<p>Słyszysz huk wybuchu na zewnątrz! O BOŻE!</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="8">[008]</button>.</p>
+</div>
+
+<div id="p8">
+<p class="pr">8</p>
+<p>Odgłos eksplozji ucichł dosłownie w ułamek sekundy. Zniknął ten młodzieniec, zniknął łańcuch; znów jesteś w normalnym wagonie tramwajowym. Zdaje się, że Twój spanikowany wzrok zrobił wrażenie na niektórych pasażerach - patrzą na Ciebie z wyraźną obawą lub zaniepokojeniem.</p>
+<p>Nadal masz zawroty głowy. O nie! Zbiera Ci się na wymioty…</p>
+<br><p>Próbujesz wstrzymać torsje i jechać dalej. <button class="b0" data-np="10">[010]</button></p>
+<p>Wysiadasz na pierwszym lepszym przystanku i dajesz upust swojemu żołądkowi. <button class="b0" data-np="9">[009]</button></p>
+</div>
+
+<div id="p9">
+<p class="pr">9</p>
+<p>Całe szczęście tramwaj właśnie zatrzymał się na przystanku. Starasz się jak najprędzej wydostać na zewnątrz. Nie jest to takie łatwe, gdy jedną ręką musisz trzymać chustkę tamującą krwawienie, a drugą pomagasz sobie przepychając się przez ludzi. W końcu udaje Ci się wyskoczyć z pojazdu. Pociemniało Ci przed oczyma i bezwiednie zacząłeś wypróżniać żołądek. Niczym gejzer pełne żółci wymiociny wyleciały z Twoich ust. I kolejny raz. I jeszcze raz.</p>
+<p>Otwierasz załzawione oczy i dostrzegasz śmietnik obok przystanku… nie miałeś jednak tyle szczęścia, żeby do niego trafić. Twoje soki żołądkowe zmieszane z ascetycznym śniadaniem znalazły się obok, na leżącym nieopodal młodym, chyba bezdomnym, człowieku. Ubrany jest w brudne ciuchy, a jego skóra jest nienaturalnie blada. Podniósł głowę i spojrzał na cuchnącą maź. Przez chwilę jakby nad czymś myślał, po czym zmarszczył brwi i z dość dużym impetem jego głowa wróciła do wcześniejszej pozycji. Jest albo pijany, albo naćpany.</p>
+<p>Nagle…</p>
+<div class="wiz"><p>Ma na imię Giedymin. Widzisz, jak się rodzi i dorasta. Widzisz jego szczęśliwe dzieciństwo, jak chodzi z rodzicami na spacery do parku, jak zdziwionymi oczkami dziecka patrzy na topniejący na jego dłoniach płatek śniegu, jak lepi bałwana, bawi się z tatą w chowanego w ich domu. Później widzisz, jak jego matka choruje, gdy chłopak jest jeszcze małym szkrabem. Jak jego dziecięce oczy odnotowują coraz bledszą skórę, coraz mniejszą ilość włosów, jego uszy słyszą coraz słabszy głos matki. Widzisz, jak idzie do szkoły, jak wraca z pierwszą szóstką i biegnie do mamy, do szpitala, aby się pochwalić swoim osiągnięciem. Widzisz, jak na lekcji plastyki zbudował domek z kartonu po kakao i jak po szkole pobiegł dać go matce. Czujesz, jak ścisnęło go serce, gdy zobaczył ojca płaczącego przy łóżku matki, która jest o wiele bledsza i spokojniejsza niż zwykle… I zupełnie cicha…</p>
+<p>Widzisz, jak płacze rozpaczliwe na pogrzebie, jaką czuje okrutną bezsilność. Obserwujesz razem z nim, jak jego ojciec zaczął ostro, naprawdę ostro, pić po śmierci matki, jak zaczął wynosić z domu rzeczy i wracać w błogim upojeniu alkoholowym. Jak bił go za pogarszające się stopnie. Widzisz, jak Giedymin po raz pierwszy musiał żebrać na jedzenie, czujesz jego pogardę do siebie, gdy to robił. Czujesz, jak powoli zaczął się do tego przyzwyczajać. Widzisz, jak z nienawiści do siebie i do świata przyłożył sobie kiedyś żyletkę do żyły i pociągnął szybko, z całej siły. Obserwujesz, jak zszywali go w szpitalu… Widzisz, jak jego ojciec z czerwonymi, zapuchniętymi od płaczu oczami, bełkotliwym pijackim głosem mówił mu, że także on, jedyny, którego ma, chciał go zostawić. Obserwujesz, jak Giedymin wybrał inną, powolną formę samobójstwa. Widzisz, jak przykłada strzykawkę do żył i jak „odlatuje”. Czujesz, że po raz pierwszy od tak wielu lat jest naprawdę szczęśliwy. Na krótką chwilę, ale jednak. Widzisz, jak budzi się w cudzych wymiocinach i mając to gdzieś, jak wszystko wokół, jak cały świat, jak jego własne, parszywe życie, zasypia z powrotem.</p></div>
+<p>Jesteś cały zlany potem… Co to było?! Masz przed sobą tego człowieka… Giedymina. Ale zaraz! Praca! Musisz szybko dostać się do pracy. Oczekiwanie na kolejny tramwaj oznacza spóźnienie. Masz jeszcze szansę złapać taksówkę i zdążyć na czas! Trudno, będzie trzeba się raz wykosztować. Chociaż… te zwidy, ta rana (teraz, gdy dotykasz głowy, widzisz, że się zasklepiła), wymioty, zawroty głowy… może jednak lepiej podjechać do szpitala?</p>
+<br><p>Łapiesz taksówkę i jedziesz do pracy. <button class="b0" data-np="11">[011]</button></p>
+<p>Łapiesz taksówkę i każesz zawieść się do szpitala. <button class="b0" data-np="94">[094]</button></p>
+</div>
+
+<div id="p10">
+<p class="pr">10</p>
+<p>W tramwaju jest cieplej niż na zewnątrz, a to bynajmniej Tobie nie pomaga. Wyższa temperatura powoduje, że czujesz więcej drażniących żołądek zapachów. Ta babcia koło Ciebie… czujesz od niej woń tak charakterystyczną dla starych ludzi. Wydaje Ci się coraz silniejsza, masz wrażenie, że za chwilę będzie nie do wytrzymania. Zakrywasz usta ręką, którą przed chwilą wstrzymywałeś krwawienie (chyba ustało, nie czujesz już ciepłej strużki spływającej po skroni i policzku). Twój żołądek nagle się skurczył, próbując wyrzucić z siebie zawartość, ale przełknąłeś ją… Obrzydliwość, ale co innego mogłeś zrobić? Czujesz ostrą zgagę w przełyku. Mdłości jednak nie ustają, drażniący zapach jest nadal wokół Ciebie… Dałbyś królestwo za garstkę świeżego powietrza.</p>
+<p>Próbujesz przepchać się w inne miejsce w wagonie. Znowu poczułeś skurcz w żołądku, tym razem o wiele gwałtowniejszy i silniejszy, ale także go powstrzymałeś (choć ledwie). Ciemnieje przed Twoimi oczami, znowu skurcz, zakrywasz dłonią usta, ale wymioty i tak przedostały się na zewnątrz. I kolejny skurcz, i kolejny. Twoja dłoń jest cała w sokach żołądkowych połączonych ze skromnym śniadaniem.</p>
+<p><i>- Ty gnoju...</i> - słyszysz jak ktoś obok Ciebie syknął pełnym nienawiści głosem. Spoglądasz w tę stronę lekko załzawionymi oczyma i widzisz całego czerwonego na twarzy, łysego jegomościa nienaturalnie umięśnionego, ubranego w dres – idealna sterydowa sylwetka. <i>- Ty menelu… Jesteś już martwy!</i></p>
+<p>Menelu? No tak, nie zdążyłeś się ogolić, masz rozbity, zakrwawiony łeb oraz ubranie i dłoń brudną od rzygowin. Wprawdzie nie śmierdzisz AŻ TAK jak rasowy menel, a także Twoje ubranie nie jest zniszczone (ba! jest nawet schludne), jednak wątpisz by ten człowiek zwrócił uwagę na taką drobnostkę, niepasującą do pewnej kategorii w jego mózgu o nazwie „po czym rozpoznać menela”. Raczej masz już przerąbane. Tym bardziej, że właśnie chwycił Cię za poły Twojego płaszcza i trzyma mocno. Za chwilę dojedziecie na pierwszy przystanek.</p>
+<br><p>Szybko! Co robisz?</p><br>
+<p>Starasz się porozmawiać z tym jegomościem i wynegocjować swoje zdrowie i życie lub wyperswadować mu jak niekorzystne jest atakowanie Ciebie. <button class="b0" data-np="12">[012]</button></p>
+<p>Gdy tylko dojedziecie do przystanku, starasz wymsknąć się z płaszcza i uciec. <button class="b0" data-np="13">[013]</button></p>
+<p>Czekasz na rozwój wydarzeń i przygotowujesz się psychicznie do bójki. <button class="b0" data-np="14">[014]</button></p>
+</div>
+
+<div id="p11">
+<p class="pr">11</p>
+<p>Całe szczęście koło przystanków autobusowych i tramwajowych zawsze przejeżdżają wolne taksówki, żeby zabrać te niedorajdy, które nie zdążyły na ostatni publiczny środek transportu. Niestety to kosztuje. No cóż… znów będzie trzeba zacisnąć pasa. </p>
+<p>Przechodzisz na przystanek autobusowy, który był niedaleko tramwajowego. Dajesz znać kierowcy taksówki, który miał właśnie przejechać obok. Ten podjeżdża. Otwierasz drzwiczki i wsiadasz na przednie siedzenie.</p>
+<p><i>- Dokąd, szefie?</i></p>
+<p><i>- Jak najbliżej rynku, od strony północnej.</i> – Wiesz, że bliżej nie da się.</p>
+<p><i>- Jasne. Kurka wodna, pechowy dziś dzień, co nie?</i> – Zastanawiasz się, o co mu
+chodzi, lecz po chwili rozumiesz, że mówi to, patrząc na Twoją ranę.</p>
+<p>O nie! Znów ten zawrót głowy.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="28">[028]</button>.</p>
+</div>
+
+<div id="p12">
+<p class="pr">12</p>
+<p>W jaki sposób chcesz porozmawiać z tym człowiekiem?</p>
+<br><p>Zastraszyć go. <button class="b0" data-np="15">[015]</button></p>
+<p>Przeprosić go. <button class="b0" data-np="16">[016]</button></p>
+<p>Przekupić go. <button class="b0" data-np="17">[017]</button></p>
+</div>
+
+<div id="p13">
+<p class="pr">13</p>
+<p>Otworzyły się drzwi. Teraz! </p>
+<br><p><button class="b0" data-rzut="1">Rzuć monetą</button><span id="wyn13">:</span></p><br>
+<p>Jeśli wypadła reszka, przejdź do paragrafu <button class="b0" data-np="22">[022]</button>.</p>
+<p>Jeśli wypadł orzeł, przejdź do paragrafu <button class="b0" data-np="21">[021]</button>.</p>
+</div>
+
+<div id="p14">
+<p class="pr">14</p>
+<p>Wypycha Cię na zewnątrz. Marszczysz czoło i przyjmujesz pewną postawę. No dobra dresiku, zobaczymy, jaki jesteś mocny. Odwracasz się zaciśniętymi pięściami.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="18">[018]</button>.</p>
+</div>
+
+<div id="p15">
+<p class="pr">15</p>
+<p><i>– Słuchaj chłopczyku, jeśli mnie tkniesz, będziesz miał przerąbane. Pamiętam twoją twarz, a pewnie ktoś już zadzwonił na policję. Chyba nie…</i></p>
+<p><i>- ZAMKNIJ RYJ!</i> – Wypycha Cię na przystanek. Ludzie w tramwaju nagle odkryli, jak ciekawy jest krajobraz na zewnątrz… Wychodzący zaś jak zwykle śpieszyli się czym prędzej do szkoły bądź pracy…</p>
+<p>…Chyba próba zastraszenia sterydowego dziecka ulicy w pojedynkę nie była najlepszym pomysłem. Rozwścieczyłeś go za to porządnie.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="18">[018]</button>.</p>
+</div>
+
+<div id="p16">
+<p class="pr">16</p>
+<p><i>– Ja naprawdę pana bardzo przepraszam. Widzi pan, jestem chory i na dodatek miałem wypadek dziś rano, stąd ta rana. Nie chcia…</i></p>
+<p><i>- STUL PYSK GNIDO!</i></p>
+<p>Chyba pokojowe, bezinteresowne załatwienie sprawy nie istnieje w umyśle tego człowieka jako jedna z możliwości rozwiązania problemu. Wypycha Cię na przystanek. Ludzie w tramwaju nagle odkryli jak ciekawy jest krajobraz miejski na zewnątrz. Wychodzący zaś jak zwykle śpieszyli się czym prędzej do szkoły bądź pracy...</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="18">[018]</button>.</p>
+</div>
+
+<div id="p17">
+<p class="pr">17</p>
+<p><i>– Słuchaj kolego, wiem, że cię wkurzyłem. Cholera, NIC DZIWNEGO. Sam chciałbym zabić kolesia, co się na mnie zhaftał! Mimo wszystko myślę, że to da się załatwić inaczej, co nie? Ile złotych załatwi sprawę?</i></p>
+<p>Wypycha Cię na przystanek. Ludzie w tramwaju nagle odkryli jak ciekawy jest krajobraz miejski na zewnątrz. Wychodzący zaś jak zwykle śpieszyli się czym prędzej do szkoły bądź pracy...</p>
+<p><i>- 300. Bo będę, kurwa, potrzebował przez ciebie nowego dresa, ciołku! „Nike” jest kurwa drogie!</i></p>
+<p>300 zł… tyle masz w portfelu. Zgadzasz się?</p>
+<br><p>Tak. <button class="b0" data-np="19">[019]</button></p>
+<p>Nie. <button class="b0" data-np="18">[018]</button></p>
+</div>
+
+<div id="p18">
+<p class="pr">18</p>
+<p>Na chwilę spoglądasz mu głęboko w oczy. Zakręciło Ci się w głowie.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="20">[020]</button>. Po przeczytaniu go wróć tu z powrotem.</p>
+<br><p>Czy chcesz podjąć walkę, czy może jednak przyjąć pozycję embrionalną i przeczekać, aż z furią wyładuje swoją złość?</p><br>
+<p>Walka. <button class="b0" data-np="23">[023]</button></p>
+<p>Przeczekać to. <button class="b0" data-np="24">[024]</button></p>
+<p>Jeśli wcześniej próbowałeś go zastraszyć, przejdź do paragrafu <button class="b0" data-np="25">[025]</button>.</p>
+</div>
+
+<div id="p19">
+<p class="pr">19</p>
+<p><i>– No dobra koleś.</i> – Opróżniasz portfel i podajesz pieniądze. Do końca miesiąca będziesz chyba zmuszony jeść sam ryż. Dzień w dzień…</p>
+<p><i>- Masz szczęście, że mam dziś dobry dzień frajerze. No to nara. </i> – Odchodzi uśmiechnięty.</p>
+<br><p>Na chwilę przejdź do paragrafu <button class="b0" data-np="20">[020]</button>. Po przeczytaniu go wróć tu z powrotem.</p><br>
+<p>Będziesz jadł ryż… jeśli nie stracisz pracy. W przeciwnym wypadku może być o wiele gorzej… Masz szczęście! Zatrzymałeś się obok poczty i jest tam bankomat. Podbiegasz do niego. Jeśli wypłacisz 50 zł, masz szansę jeszcze złapać taksówkę i zdążyć do pracy!</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="11">[011]</button>.</p>
+</div>
+
+<div id="p20">
+<p class="pr">20</p>
+<p>Ten dres… </p>
+<div class="wiz"><p>Na imię ma Grzegorz. Widzisz, jak jego pijana matka przywożona jest na oddział porodowy. Choć taka sytuacja wydawać by się mogła niemożliwa, ona jest zbyt pijana żeby rodzić… Wody jednak już odeszły, więc poród musi się odbyć… Wyszedł na świat przez cesarkę. Widzisz, jak matka, gdy jest trzeźwa, karmi go piersią i tuli do siebie oraz jak leży pijana w amoku alkoholowym, gdy on płacze głodny i brudny od własnych ekskrementów.</p>
+<p>Widzisz, jak ojciec leje go pasem gdy chłopak stłukł miskę z zupą. Słyszysz jego płacz, czujesz jego bezsilność, gdy jest ciągle poniżany przez swoich rodziców. Widzisz uśmiech ojca, gdy Grześ kopnął babcię, choć czujesz, jak przykro mu się robi, gdy babcia mówi (jak za każdym razem gdy go odwiedza), że nic dobrego z niego nie wyrośnie. Przy kolejnej wizycie, gdy znów kopnął babcię, ojciec stłukł go na kwaśne jabłko. Czujesz bezsilność Grzegorza, gdy inne dzieci mają zabawki, o których on mógłby tylko pomarzyć. Czujesz jego wielką radość, namiastkę równości, gdy udaje mu się ukraść jedną z nich innemu dziecku. Widzisz, jak Grzegorz zaczyna sobie radzić, gdy po raz kolejny udaje mu się ukraść ze sklepu coś do jedzenia, bo na obiad w domu nie miał zbytnio co liczyć. Czujesz jego dumę, gdy udało mu się pobić bogatego chłopaczka z przedmieścia. Czujesz jego wstyd i nienawiść do policji i sądu, gdy zostaje mu przyznany kurator. Czujesz jego radość i tak upragnione narastające poczucie bezpieczeństwa, gdy wyrabia sobie w swojej dzielnicy odpowiednią opinię. Czujesz jego uwalniającą się nienawiść do tego niesprawiedliwego świata, do „rodziców”, którzy nie dali mu miłości, do wszystkich ludzi, którzy go skrzywdzili przy każdej bójce, napadzie czy meczu. I nagle widzisz, jak wymiociny jakiegoś frajera lądują na jego dresie. Czujesz, jak przypomina mu to całe lata poniżeń jego życia.</p></div>
+<p>Cholera! Co to było?</p><br>
+<p>Wróć do paragrafu (<button class="b0" data-np="18">[018]</button>, <button class="b0" data-np="19">[019]</button> lub <button class="b0" data-np="21">[021]</button>), który Cię tu skierował.</p>
+</div>
+
+<div id="p21">
+<p class="pr">21</p>
+<p>Biegniesz ile sił w nogach. Skręcasz na pierwszym zakręcie i zanim on wybiegnie zza niego, szybko wbiegasz do pierwszego lepszego sklepu. Widzisz przez szybkę, jak po chwili biegnie dalej prosto, nie zauważając najwidoczniej Twojego manewru.</p>
+<p>Świat przed Twymi oczyma zaczął wirować.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="20">[020]</button>. Po przeczytaniu go wróć tu z powrotem.</p>
+<br><p>Dobrze, pobiegł gdzieś dalej. Jeśli się pośpieszysz, możesz teraz złapać taksówkę i zdążyć do pracy. <button class="b0" data-np="11">[011]</button></p>
+</div>
+
+<div id="p22">
+<p class="pr">22</p>
+<p>Gdy próbujesz wybiec, on błyskawicznie łapie Cię za szyję i wyciąga na zewnątrz.</p>
+<p>Zabrakło Ci szczęścia i refleksu.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="18">[018]</button>.</p>
+</div>
+
+<div id="p23">
+<p class="pr">23</p>
+<p>Wybrałeś walkę. Co jak co, ale nikt nie ma prawa traktować Cię w taki sposób. Wiesz, że szanse są nierówne, ale ten dres chyba nawet nie przewiduje, że mógłbyś go uderzyć. To daje Ci pewną przewagę.</p>
+<br><p>Twoja obecna wytrzymałość: <span id="twyt">5</span></p>
+<p>Wytrzymałość dresiarza: <span id="dwyt">8</span></p>
+<br><p>Walka:</p>
+<p>Rzucasz monetą najpierw za siebie, później za niego.</p>
+<p>W swojej turze rzucasz monetą dwukrotnie. Jeśli za pierwszym i drugim razem wypadnie orzeł, odpisujesz dresiarzowi 1 Punkt Wytrzymałości. Jeśli wystąpi inna kombinacja, niestety unika Twojego ciosu.</p>
+<p>W jego turze rzucasz monetą raz. Jeśli w jego turze wypadnie reszka odpisz ze swojej karty 1 Punkt Wytrzymałości. Jeśli orzeł, udaje Ci się uniknąć ciosu.</p>
+<br><p><span id="wyn23">Twoja kolej. </span><button id="walka" class="b0" data-walka="1">Rzuć monetą</button><span id="wyn23b">:</span></p>
+<br><p>Jeśli skala jego wytrzymałości spadnie do 1, zanim Twoja osiągnie 0, przejdź do paragrafu <button class="b0" data-np="27">[027]</button>.</p>
+<p>Jeśli Twoja Wytrzymałość dojdzie do 0, zanim jego osiągnie 1, przejdź do paragrafu <button class="b0" data-np="26">[026]</button>.</p>
+</div>
+
+<div id="p24">
+<p class="pr">24</p>
+<p>Pierwszy cios powala Cię na ziemię. Leżysz w pozycji embrionalnej, zasłaniając rękoma głowę, gdy on kopie Cię z furią. Kiedy się zasapał, splunął w Twoją stronę i odszedł, głośno klnąc. [-2 pkt WT]. </p>
+<p>Powoli wstajesz. Jesteś trochę obolały. Z rany na głowie znów zaczęła się sączyć krew, ale poza tym jesteś cały. Możesz złapać teraz taksówkę i jeszcze zdążyć do pracy. Wiesz, że dzwonienie na policję nic nie da, a na pewno nie teraz, kiedy on poszedł już w nie wiadomo którym kierunku. Oczywiście, także teraz możesz zdecydować się na dotarcie do szpitala.</p>
+<br><p>Co robisz?</p><br>
+<p>Próbujesz złapać taksówkę i wybrać się do szpitala. <button class="b0" data-np="94">[094]</button></p>
+<p>Próbujesz złapać taksówkę i każesz zawieść się do pracy. <button class="b0" data-np="11">[011]</button></p>
+</div>
+
+<div id="p25">
+<p class="pr">25</p>
+<p>Gdy padały kolejne ciosy, zdałeś sobie sprawę, że jeszcze nigdy nie widziałeś nikogo tak ogarniętego furią, nigdy nie widziałeś takiej nienawiści w czyichkolwiek oczach. Nie byłeś w stanie zablokować żadnego ciosu. W końcu skuliłeś się, osłaniając głowę z nadzieją, że niedługo skończy lub chociaż się zmęczy. Wtedy miałbyś szansę na ucieczkę lub na atak. Czujesz, jak krew cieknie ze złamanego nosa. <i>Ty kurwo! Ty chuju! Ty gnido!</i>, słyszysz nieustannie. Na chwilę przerwał. Szybko starasz się zorientować co się dzieje; otwierasz oczy, podnosisz powoli głowię… i widzisz jak czerwona cegłówka leci w Twoją stronę.</p>
+<br><p>BUM!</p><br>
+<p>Oszałamiający ból przeszył Twoją głowę, ale trwało to tylko ułamek sekundy. Teraz widzisz wszystko jakby z boku. Dres, gdy zobaczył, co zrobił, postanowił uciec z miejsca zdarzenia.</p>
+<p>W miejscu Twojej głowy widzisz coś, co przypomina okrągłą, zgniecioną puszkę z której wytrysnęła czerwona substancja z różowym nadzieniem. Tak… teraz, gdy nie musisz już nigdzie się spieszyć po chwili refleksji dociera do Ciebie, że była to naprawdę głupia śmierć. Co Cię napadło, żeby zwymiotować w tramwaju? A potem jeszcze próbować zastraszyć jakiegoś steryda? Jesteś… a raczej byłeś... pracownikiem firmy komputerowej. Tacy ludzie to nie wojownicy.</p>
+<p>O! Teraz ktoś musiał zadzwonić po policję i karetkę! Właśnie przyjechali sprzątnąć Twoje ciało. Szkoda, że ludzie nie zareagowali wcześniej.</p>
+<p>Ech! No cóż… Trzeba ruszyć w dalszą podróż.</p>
+<p>Żegnaj pechowcu. Tu kończy się Twoja przygoda na tym padole łez.</p>
+<p>Bywaj!</p>
+<br><p>Wróć do początku gry i spróbuj swoich sił jeszcze raz, ponownie czytając <a href="http://3dh.gsi.pl/gp/tajemne_oblicze_swiata/">Prolog</a>.</p>
+</div>
+
+<div id="p26">
+<p class="pr">26</p>
+<p>Byłeś już u kresu wytrzymałości. Przyjęcie kolejnych ciosów było dla Ciebie zbyt wielkim wysiłkiem. Dres z furią kopał Cię po głowie, klatce piersiowej i brzuchu. Ostry ból zaczął ustępować miejsca ogromnemu poczuciu wycieńczenia. </p>
+<p>Teraz widzisz wszystko jakby z boku. On jeszcze przez chwilę kopał, splunął w Twoją stronę i odszedł. Jakaś niezbyt ładna, trochę grubawa dziewczyna (mogła mieć najwyżej 15 lat), podbiegła szybko do czegoś, co jeszcze przed chwilą było Tobą i przyłożyła trzy palce do Twojej tętnicy szyjnej. Spanikowanym głosem krzyknęła, by ktoś zadzwonił po karetkę i nieco zbyt gwałtownie przystąpiła do robienia masażu serca. Z pewnością połamała Ci jeszcze kilka żeber. Mimo to dzielna z niej harcerka, nie to co reszta nieczułych ludzi. Skąd wiesz, że ona jest harcerką? Tak teraz już to wiesz, wiesz trochę więcej, zaczynasz widzieć rzeczy ukryte.</p>
+<p>Lepszym byłeś informatykiem niż ulicznym wojownikiem.</p>
+<p>Teraz jednak przestało to mieć znaczenie.</p>
+<p>No cóż, na Ciebie już czas.</p>
+<p>Bywaj.</p>
+<p>Tu kończy się Twoja przygoda na tym padole łez.</p>
+<br><p>Wróć do początku gry i spróbuj swoich sił jeszcze raz, ponownie czytając <a href="http://3dh.gsi.pl/gp/tajemne_oblicze_swiata/">Prolog</a>.</p>
+</div>
+
+<div id="p27">
+<p class="pr">27</p>
+<p>Zszokowany patrzy na Ciebie, gdy kolejny cios wylądował na jego twarzy. Zerwał się do ucieczki. Krzyknął tylko: <i>JESTEŚ JUŻ MARTWY</i> i uciekł gdzieś między bloki. Mógłbyś go gonić, ale sam dobrze wiesz, że gdybyś spotkał go tam z kumplami, oznaczałoby to dla Ciebie pewną śmierć.</p>
+<p>Wow, sam siebie zaskoczyłeś. No dobra, czas działać dalej.</p>
+<br><p>Co robisz?</p><br>
+<p>Łapiesz taksówkę i każesz zawieść się do szpitala. <button class="b0" data-np="94">[094]</button></p>
+<p>Łapiesz taksówkę i kontynuujesz swoją podróż do pracy. Nie chcesz skończyć na bruku. <button class="b0" data-np="11">[011]</button></p>
+</div>
+
+<div id="p28">
+<p class="pr">28</p>
+<div class="wiz"><p>Na imię ma Nikodem. Rok temu zmarła mu żona. Miała zaledwie 35 lat. Umierała długo, zbyt długo. Rak jest bezlitosny. Nie mogąc patrzeć na jej cierpienie, pił. Z wolna popadał w otchłań alkoholizmu. Gdy umarła, pogrążył się jeszcze bardziej. Trzeba jednak Nikodemowi przyznać, że był na tyle zdyscyplinowany, by nie pić w miejscu pracy – pijany kierowca taksówki… nie, nie pociągnąłby długo, gdyby dopuścił się takiego zaniedbania.</p>
+<p>Pewnego wieczoru, gdy wrócił do domu, zajrzał do pokoju swojej piętnastoletniej córki. Spała, tak słodko spała. Zaczął gładzić ją po blond włosach i poczuł zapach jej jaśminowych perfum. Zbliżył się i pocałował ją. Nie obudziła się, tylko jęknęła cicho. Widocznie coś jej się śniło. Tak bardzo przypominała mu jego żonę. Odsunął kołdrę i zaczął gładzić ją po brzuchu… i piersiach. Jej oddech przyspieszył. Tak… podniecało go to. Wsunął rękę pomiędzy jej uda. Było tam wilgotno. Tak długo nie miał kobiety… zdjął spodnie i zaczął w nią wchodzić… Coraz szybciej i szybciej. Ona też jęczała głośniej, coraz głośniej i… obudziła się. Zobaczyła swojego pijanego ojca rozebranego od pasa w pół (śmierdzącego speluną do której zazwyczaj chodził) i dochodzącego na niej. Zaczęła krzyczeć i próbowała go zepchnąć z siebie. On jej na to nie pozwolił. Złapał ją silniej jedną ręką, a drugą zasłonił usta. Był już zbyt blisko orgazmu, żeby przestać. W końcu doszedł i spojrzał na jej załzawione oczy… Ogarnęła go panika, gdy zrozumiał, co zrobił. Uderzył ją w twarz. „Czego ryczysz sieroto! Przecież to nic takiego…”; „Dopóki się nie obudziłaś, to Ci się podobało…”; „Co mam zrobić, skoro umarła Twoja matka?!”. Zaczął ją bić i krzyczeć, że jeśli komuś o tym powie, to ją zabije.</p>
+<p>Po tym procederze, gwałcił ją i bił. Stało się to dla niego okrutną rutyną. Trzymał ją w ciągłym strachu. Tylko to mogło go uchronić przed stratą wszystkich znajomych, latami więzienia czy napiętnowaniem społecznym.</p>
+<br><p>I tak, jak co dzień, wyruszył dziś do pracy. Cały ranek czatował na ludzi, którzy spóźnili się na autobus lub tramwaj (przystanek autobusowy na tym odcinku był obok tramwajowego). W końcu złapał go jakiś koleś z dość świeżą raną na głowie. Nieszczęsny pechowiec…</p></div>
+<p>Jeśli jechałeś do pracy, przejdź do paragrafu <button class="b0" data-np="29">[029]</button>.</p>
+<p>Jeśli jechałeś do szpitala, przejdź do paragrafu <button class="b0" data-np="95">[095]</button>.</p>
+</div>
+
+<div id="p29">
+<p class="pr">29</p>
+<p>A więc ten taksówkarz jest zboczeńcem, który wykorzystuje seksualnie swoją córkę! A może nie? Może to Ty szalejesz? Od kiedy poszedłeś do tej pracy, ciągle działasz na wysokich obrotach. Może to przemęczenie.</p>
+<p>Koło skrzyni biegów leży nóż sprężynowy taksówkarza. Niezbyt dobre miejsce do trzymania broni. Przecież pasażer może ją złapać i zaatakować kierowcę…</p>
+<p>Pod lusterkiem wisi znaczek ze św. Krzysztofem. Ciekawe czy ten zboczeniec wie, że w czasie II Soboru Watykańskiego św. Krzysztof został zdegradowany, gdyż prawdopodobnie jest schrystianizowaną wersją Anubisa… Mimo to, może ten potwór jest w jakimś stopniu religijny. Ale ktoś taki może być religijny?</p>
+<br><p>Czekasz, aż dojedziecie do centrum, po czym zabierasz nóż i próbujesz błyskawicznie zabić tego człowieka. <button class="b0" data-np="30">[030]</button></p>
+<p>Korzystasz z wątłego śladu, iż może on być religijny. Postanawiasz udawać boskiego posłannika i próbujesz przemówić do jego sumienia. <button class="b0" data-np="33">[033]</button></p>
+<p>Olewasz to i jedziesz po prostu do pracy. Kto wie, może coś szwankuje w Twojej głowie, a nie śpieszy Ci się na wakacje w szpitalu dla psychicznie i nerwowo chorych. Po prostu cierpliwie czekasz, aż dojedziecie do pracy i starasz się żyć jakby nic się nie stało. <button class="b0" data-np="36">[036]</button></p>
+</div>
+
+<div id="p30">
+<p class="pr">30</p>
+<p>Dojeżdżacie na miejsce. Taaak, spokojnie zdążysz do pracy. Tylko najpierw trzeba zlikwidować pewne ścierwo.</p>
+<p><i>- 23 zł, szefie.</i></p>
+<p>Dałeś 50. Włożył rękę do kieszeni, żeby wydać Ci resztę. TERAZ! Sięgasz błyskawicznie po nóż.</p>
+<br><p><button class="b0" data-rzut="1">Rzuć monetą</button><span id="wyn30">:</span></p><br>
+<p>Jeśli wypadł orzeł, przejdź do paragrafu <button class="b0" data-np="31">[031]</button>.</p>
+<p>Jeśli wypadła reszka, przejdź do paragrafu <button class="b0" data-np="32">[032]</button>.</p>
+</div>
+
+<div id="p31">
+<p class="pr">31</p>
+<p>Złapałeś nóż, brzęknęło wyskakujące ostrze i zanim zdążył jakkolwiek zareagować, zanurzyłeś je w jego krtani. Krew tryskała krótkimi, jasnymi strumieniami, zachlapując jego koszule. Charczał, złapał Cię za krawat i zajrzał głęboko w oczy. Jego twarz, pełna rozpaczy i goryczy, zdawała się pytać: „Dlaczego?”.</p>
+<p><i>- Bo jesteś jebanym córkojebcą </i>– odpowiedziałeś zimno i oschle.</p>
+<p>Jego ciało zsunęło się w dół, na skrzynię biegów.</p>
+<p>Twoje ręce brudne są od krwi, jest także kilka małych, czerwonych plamek na Twoim ubraniu. Na tylnym siedzeniu widzisz paczkę chusteczek higienicznych… Trudno, będzie musiało wystarczyć. Wycierasz starannie ręce i próbujesz wyczyścić swój płaszcz. Ręce masz już w miarę czyste, ale krwi na materiale w ten sposób się nie pozbędziesz. Potrzebujesz zimnej wody. Ech, co tam i tak jest prawie niewidoczna.</p>
+<p>Wychodzisz z taksówki i idziesz w stronę rynku. Tam czekają już na Ciebie dwa radiowozy. O tak szybkiej akcji policji jeszcze nie słyszałeś. Widocznie ktoś musiał widzieć całą sytuację i iść za Tobą, informując telefonicznie stróżów prawa o Twoim położeniu, a Ci zawsze kręcą się blisko rynku.</p>
+<p>Celują do Ciebie z pistoletów. Wiesz, że nie masz szans, więc pokornie klękasz, gdy każą to zrobić. Ręce składasz z tyłu, by mogli skuć Cię kajdankami. Ech… Córka taksówkarza nie potwierdziła, że była molestowana… Może miała na to wpływ jej babcia siedząca niedaleko na sali sądowej?</p>
+<p>Dostałeś 8 lat… To niewiele jak za zabójstwo. Z niezrozumiałych przyczyn zostałeś uznany za poczytalnego.</p>
+<br><p>Niestety, na tej niesprawiedliwości kończy się Twoja przygoda.</p>
+<p>Żegnaj!</p>
+<br><p>Wróć do początku gry i spróbuj swoich sił jeszcze raz, ponownie czytając <a href="http://3dh.gsi.pl/gp/tajemne_oblicze_swiata/">Prolog</a>.</p>
+</div>
+
+<div id="p32">
+<p class="pr">32</p>
+<p>Błyskawicznie sięgasz po nóż sprężynowy, łapiesz go, lecz w tym samym momencie taksówkarz wyciąga z kieszeni gaz pieprzowy. Zanim zdążyłeś zadać cios, udało mu się Cię oślepić. Piekący ból oczu jest nie do wytrzymania. Krzyknąłeś, upuściłeś nóż i odruchowo zasłoniłeś twarz dłońmi. Po sekundzie oczy masz już załzawione i strumieniem cieknie Ci z nosa. Chciałbyś wysiąść i uciec, ale nie jesteś w stanie otworzyć oczu. Po omacku próbujesz otworzyć drzwiczki... nagle oszałamiający, ostry ból ścisnął Twoją klatkę piersiową… Nie możesz się ruszyć, ani zaczerpnąć oddechu. Próbujesz złapać ręką tam, gdzie umiejscowione jest serce i chwytasz… rękojeść noża.</p>
+<br><p>Tak… to już koniec.</p>
+<p>Chociaż próbowałeś walczyć z potworem.</p>
+<br><p>Wróć do początku gry i spróbuj swoich sił jeszcze raz, ponownie czytając <a href="http://3dh.gsi.pl/gp/tajemne_oblicze_swiata/">Prolog</a>.</p>
+</div>
+
+<div id="p33">
+<p class="pr">33</p>
+<p>A jeśli to obłęd? Jeśli po prostu wariujesz, to jak on zareaguje na Twoje bredzenie?</p>
+<p>No cóż, teraz już za późno żeby się cofnąć. Podjąłeś decyzje.</p>
+<p><i>- Wiesz bracie, że grzeszysz? I to bardzo ciężko?</i></p>
+<p><i>- Eeee… Tak, jak my wszyscy, ojcze. Jesteś księdzem, ojcze? Nie widać tego po tobie.
+Gdzie twoja koloratka?</i> – patrzy na Ciebie z ukosa.</p>
+<p><i>- Nie, nie jestem księdzem, zakonnikiem ani żadnym nawiedzonym szaleńcem. Jestem wysłannikiem Bożym.</i></p>
+<p><i>- Aha, no tak. Jasne… Jakbyś mógł, przekaż panu, że przydałaby mi się wygrana w totolotka. W końcu ile można tyrać na chleb powszedni od rana do nocy.</i> – Na jego twarzy pojawił się kpiący uśmiech.</p>
+<p><i>- Nie szydź grzeszniku! Lepiej zajmij się zbawieniem duszy swojej, bo jesteś bliżej piekła, niż kiedykolwiek przypuszczałeś… i jeszcze do piekła próbujesz zaciągnąć swoją córkę.</i></p>
+<p><i>- Ja nie mam dzieci</i> – odpowiada nerwowo taksówkarz.</p>
+<br><p>Co robisz?</p>
+<br><p>Grasz dalej. <button class="b0" data-np="34">[034]</button></p>
+<p>Przepraszasz go i już do końca drogi się nie odzywasz (jedziesz do pracy). <button class="b0" data-np="36">[036]</button></p>
+<p>Przepraszasz go i już do końca drogi się nie odzywasz (jedziesz do szpitala). <button class="b0" data-np="96">[096]</button></p>
+</div>
+
+<div id="p34">
+<p class="pr">34</p>
+<p><i>– Kłamiesz grzeszniku! Jest piętnastoletnią blondynką. Nie myśl, że tylko ty cierpiałeś po stracie swojej żony. Ona straciła wtedy matkę! Ty zaś, zamiast dalej być dla niej ojcem, stałeś się potworem! Bóg zna twoje czyny, widzi wszystko. On wie, jak gigantyczną krzywdę jej wyrządziłeś! Zabrałeś jej cnotę, gwałciłeś ją, gdy tylko dopadły cię żądze, katowałeś ją za łzy cierpienia, które sam spowodowałeś. Każda minuta, każda sekunda przybliża cię do śmierci, a ty nic z tym nie robisz. Jeśli od tej chwili się nie zmienisz, skazany zostaniesz na męki piekielne, wieczne cierpienie, płacz i zgrzytanie zębów.</i> – Twój głos stał się tak surowy, że prawie krzyczałeś. Zastanawiasz się, czy może Cię trochę nie poniosło.</p>
+<p><i>- Nieprawda! Człowieku, o czym ty mówisz?</i></p>
+<br><p>Co robisz?</p>
+<br><p>Grasz dalej. <button class="b0" data-np="35">[035]</button></p>
+<p>Przepraszasz go i już do końca drogi się nie odzywasz (jedziesz do pracy). <button class="b0" data-np="36">[036]</button></p>
+<p>Przepraszasz go i już do końca drogi się nie odzywasz (jedziesz do szpitala). <button class="b0" data-np="96">[096]</button></p>
+</div>
+
+<div id="p35">
+<p class="pr">35</p>
+<p><i>– Możesz okłamać drugiego człowieka, możesz próbować okłamać samego siebie, mówić sobie, że to nic takiego, że to ty jesteś ofiarą, że to ciebie los zmusił do takich postępków. Wiesz wszak w głębi duszy, że tak nie jest. Zastanów się. Jeśli teraz będziesz tego żałował, naprawisz krzywdy, które wyrządziłeś i już nigdy tak nie postąpisz, masz szansę odkupić swoje winy i uratować siebie od ogni piekielnych.</i> – Mówisz łagodniej niż poprzednio. Chyba poskutkowało, widzisz łzy, które pojawiły się w kącikach jego oczu.</p>
+<p><i>- Boże, wybacz mi. Boże, ja jestem… ja jestem… potworem. Panie, wybacz mi!</i></p>
+<p><i>- Pan ci wybaczy Bracie, jeśli tylko nigdy już tak nie postąpisz.</i></p>
+<p><i>- Dziękuję ci Panie… dziękuję ci Panie</i> – kierowca zaczyna chlipać, wygląda na to, że coś w nim pękło.</p>
+<p>Przez resztę drogi on cicho płacze i ciągle powtarza niczym litanię: <i>Jestem potworem, Boże, jestem potworem. Panie, wybacz mi, błagam Panie, wybacz mi.</i></p>
+<p>Dojeżdżacie na miejsce.</p>
+<p><i>− Ile płacę?</i></p>
+<p><i>− Człowieku, ratujesz moją duszę. Nic nie płacisz, już zapłaciłeś. Już masz wysiadać, gdy on łapie Cię za tył płaszcza. Odwracasz się szybko. Kierowca wciska coś w Twoją dłoń.</i></p>
+<p><i>- Spotkałem tydzień temu dziwnego mężczyznę. Powiedział, że mam to oddać człowiekowi, który mnie uratuje. Jest srebrna, więc chciałem ją trzymać na czarną godzinę. Ale chyba miałem podarować to właśnie tobie… Dziękuje ci raz jeszcze.</i></p>
+<p>Wychodzisz z samochodu i patrzysz na srebrną bransoletę. Po lewej stronie wyryto coś, co chyba jest ożywionym szkieletem niedźwiedzia, machającego lewą łapą, po prawej zaś młodego orła.</p>
+<p>Wpisz tę bransoletę razem z jej opisem do swojego ekwipunku.</p>
+<br><p>Jeśli jechałeś do pracy, przejdź do paragrafu <button class="b0" data-np="36">[036]</button>.</p>
+<p>Jeśli jechałeś do szpitala, przejdź do paragrafu <button class="b0" data-np="96">[096]</button>.</p>
+</div>
+
+<div id="p36">
+<p class="pr">36</p>
+<p>Wysiadasz przy północnej stronie rynku i kierujesz się do swojego miejsca pracy. Spoglądasz na zegarek. Nie jest źle, masz jeszcze pięć minut. Zaczynasz biec i pędem wymijasz ludzi.</p>
+<p>Tyle problemów, tyle nieszczęść i radości na tak małej powierzchni. Dziwna myśl…</p>
+<p>O Boże! Nie! Znów zaczyna Ci się kręcić w głowie. Obrazy dotyczące osób dookoła wdzierają się do głowy. Masz mroczki przed oczami.</p>
+<div class="wiz"><p>Zdradził mnie, choć dawałam mu wszystko, co mogłam dać.</p>
+<p>Musiałem go zabić, rzucił się przecież na moje dziecko! Głupi pies. I głupi smarkacz! Czemu płakał i powiedział, że mnie nienawidzi, kiedy to zrobiłem? Muszę się napić.</p>
+<p>Cholera, znów zero kasy a to dopiero środek miesiąca. Starzy nie chcą mnie widzieć. Stołówkę dla bezdomnych otwierają dopiero o 14, a ja jestem ciągle głodny. Muszę coś ukraść. Boże, błagam cię, żeby mnie nie złapali!</p>
+<p>Zdradził… zabił… zgwałcił… okradła… porwała… oszukał… głód… nędza… nienawiść…</p></div>
+<p>Aaaaaaaaa!!!!!!!!! Nie jesteś w stanie tego wytrzymać</p>
+<br><p><button class="b0" data-rzut="3">Trzykrotnie rzuć monetą</button><span id="wyn36">:</span></p>
+<br><p>Jeśli wypadały same reszki, przejdź do paragrafu <button class="b0" data-np="38">[038]</button>.</p>
+<p>Jeśli pojawiała się inna kombinacja, przejdź do paragrafu <button class="b0" data-np="37">[037]</button>.</p>
+</div>
+
+<div id="p37">
+<p class="pr">37</p>
+<p><i>Wizje, odejdźcie. Błagam, ODEJDŹCIE.</i> - powtarzasz w swojej głowie. Całą siłą woli starasz się je powstrzymać. Czujesz, że mogą przyprawić Cię o szaleństwo. </p>
+<p>Działa… na jakiś czas działa. Te twarze ludzi… czujesz, że nie możesz tu dłużej zostać. Jesteś na krańcu wytrzymałości psychicznej.</p>
+<br><p>Biegniesz szybko do pracy. <button class="b0" data-np="39">[039]</button></p>
+</div>
+
+<div id="p38">
+<p class="pr">38</p>
+<p>Znów ten głos. Słyszysz go jakby przez ścianę. Widzisz jakieś obrazy, ale nie jesteś w stanie zrozumieć, co one przedstawiają. I znów ten głos…</p>
+<p><i>- Tak, on jest warzywem, więc nie będziesz z nim miała większego problemu. Także tego będziesz karmić i dawać mu leki. Ale myć go i zmieniać pieluchy możesz tylko w obecności wyćwiczonych sanitariuszy. Potrafi stać się wyjątkowo niebezpieczny. Rzucił się już trzy razy na sanitariuszki, o mało co ich nie zabijając. Ostro je sponiewierał… połamane żebra, złamana ręka, wybite zęby… To niezbyt straszny wynik jak na 10 lat przebywania tutaj, ale uważaj, nie zapominaj, za co tu trafił! Zabił w szale kobietę, krzycząc, że musi ją uratować. Wyobraź to sobie: walił ją kamieniem brukowym po głowie i krzyczał, żeby uciekała z „tej powłoki” tak szybko, jak to możliwe. Chore! Kiedy przebywasz z nim w jednym pomieszczeniu na wszelki wypadek mniej oczy dookoła głowy.</i></p>
+<p>Zastanawiasz się, o kim te głosy mówią. Spoglądasz na swoje ręce i widzisz, że nie możesz nimi normalnie ruszać. Owinięty jesteś jakąś białą substancją. Ach tak! Jak mogłeś znów zapomnieć. Przecież jesteś kokonem. Hi hi, ale będą mieli miny, jak zmienisz się w motyla. Musisz tylko cierpliwie czekać… cierpliwie czekać… cierpliwie czekać…</p>
+<p>AAAAAAAAAAAA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+<p>Popadłeś w otchłań obłędu. Nie możesz dalej grać. Tu kończy się Twoja przygoda.</p>
+<p>AAAAAAAAAAAAAAAAAAAAAAAA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</p>
+<br><p>Wróć do początku gry i spróbuj swoich sił jeszcze raz, ponownie czytając <a href="http://3dh.gsi.pl/gp/tajemne_oblicze_swiata/">Prolog</a>.</p>
+</div>
+
+<div id="p39">
+<p class="pr">39</p>
+<p>Biegniesz szybko do pracy, potrącając ludzi. Nie, nie możesz patrzeć im w twarz, czujesz, że nie możesz. Słyszysz za sobą jakieś obelgi, ale nie zwracasz na nie uwagi, tylko biegniesz tak szybko, jak to możliwe.</p>
+<p>Uff, widzisz przed sobą budynek, w którym mieści się firma komputerowa <i><b>Jaldabaoth</b></i> – Twoje miejsce pracy. Otwierasz szybko drzwi budynku, wbiegasz po schodach, otwierasz drzwi do firmy. Uff… zdążyłeś.</p>
+<p>Na nieszczęście, pierwszą osobą, którą spotkałeś, był szef. Nie lubisz go, podobnie jak większość Twoich kolegów z pracy.</p>
+<p><i>- No no, w samą porę. Jeszcze 5 minut, a zwolniłbym pana. Nie po to płacę takie ciężkie pieniądze, żeby potem ktoś okazywał mi brak szacunku! Człowieku, jak ty śmierdzisz! Czyżbyś spędził noc z bezdomnymi? Co ty masz na marynarce? Tygodniowe kawałki jedzenia czy wymiociny?</i></p>
+<p>Patrzysz na swojego szefa z coraz większym strachem. Widzisz, jak jego zęby się wydłużają, a oczy robią się czarne niczym bezdenne studnie. Brwi marszczą się w niewyobrażalnym gniewie, a usta szczerzą się w obłąkańczym uśmiechu. Jego język przypomina Ci język węża.</p>
+<p><i>- Co się tak na mnie patrzysz jak obłąkany? Pytam się, co to jest na pańskiej marynarce!</i></p>
+<p>Opowiadasz mu o swoich rannych przygodach, pomijając co bardziej kompromitujące kawałki.</p>
+<p><i>- No… chwalebne to, że mimo wszystko przybył pan do pracy. Proszę następnym razem bardziej uważać. Zresztą, pańskim zapachem będą musieli się martwić pańscy koledzy, nie ja. Proszę już nie tracić czasu i zająć się pracą.</i></p>
+<p>Dziękujesz i idziesz w stronę swojej pracowni, którą dzielisz razem z czterema innymi osobami. To typowi pracoholicy - maniacy komputerowi. Pozwalają się wciągnąć robocie do tego stopnia, że pięknie się ich oszukuje na kasie, którą powinni zarobić za siedzenie po godzinach.</p>
+<p>Wchodzisz do pokoju. Nikt nawet nie zauważył, że przyszedłeś. Wszyscy ślepo patrzą w monitory.</p>
+<p>Ty także zasiadasz przed biurkiem, włączasz komputer i czekasz na uruchomienie się sytemu. Oho, chyba ktoś zauważył Twoje przyjście.</p>
+<p>O nie! Co się tutaj dzieje?! Zamiast Daniela widzisz… jakąś przeraźliwie zniekształconą istotę.</p>
+<p>Jej oczy są jak lustra, nie ma nosa, a usta są zaszyte. Pokazuje Cię palcem Pawłowi. Tyle że zamiast Pawła także widzisz COŚ innego. Jego oblicze jest całe czerwona, oczy ma czarne jak pies, policzki wklęsłe, a broda wyciągnięta do przodu do tego stopnia, że jego twarz z profilu przypomina półksiężyc. Nagle wstaje i jego koszula zostaje rozerwana przez czerwone, błoniaste skrzydła. Wzbija się na za ich pomocą pod sufit i RZUCA SIĘ w TWOJĄ STRONĘ.</p>
+<br><p>Szybko! Co robisz?</p><br>
+<p>Uciekam. <button class="b0" data-np="40">[040]</button></p>
+<p>Zostaję i próbuję podjąć walkę. <button class="b0" data-np="41">[041]</button></p>
+<p>Zostaję i próbuję porozmawiać. <button class="b0" data-np="42">[042]</button></p>
+<p>Zostaję i czekam na dalszy bieg wydarzeń. <button class="b0" data-np="38">[038]</button></p>
+</div>
+
+<div id="p40">
+<p class="pr">40</p>
+<p>Zrywasz się z miejsca i uciekasz z firmy tak szybko, jak tylko się da. Biegniesz po schodach, otwierasz drzwi i jesteś już na ulicy. Biegniesz dalej! Prosto przed siebie. Obracasz się. O nie! On dalej za Tobą leci! Kontynuujesz ucieczkę. Przed Tobą wyłania się stary, gotycki kościół.</p>
+<br><p>Wbiegasz do niego. <button class="b0" data-np="43">[043]</button></p>
+</div>
+
+<div id="p41">
+<p class="pr">41</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="38">[038]</button>.</p>
+</div>
+
+<div id="p42">
+<p class="pr">42</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="38">[038]</button>.</p>
+</div>
+
+<div id="p43">
+<p class="pr">43</p>
+<p>Wbiegasz do starego gotyckiego kościoła. Pierwsze co czujesz to chłód. Później dostrzegasz światło wpadające przez kolorowe witraże, wysokie sklepienie, dwa rzędy drewnianych ławek i ołtarz. Obracasz się i nie widzisz tego czegoś za sobą. Wyglądasz na zewnątrz. Cholera! Jest tam dalej i chyba czeka na Ciebie. Siadasz w ławce. Klękasz i zaczynasz się cicho modlić. Może pomoże. Sam do końca nie rozumiesz dlaczego, ale zaczynasz płakać. Być może od stresu wywołanego dzisiejszym dniem, być może dlatego, że wiesz, że straciłeś właśnie pracę, może dlatego, że widziałeś dziś tyle cierpienia; a może to wszystko naraz… albo nic z tych rzeczy. Sam nie wiesz. Czujesz tylko, że wielkie, krople płyną Ci po policzkach i jest Ci źle, bardzo źle. Nagle czujesz czyjąś dłoń na ramieniu. Obracasz się szybko gotowy do odparcia ataku! Nie było to jednak potrzebne. Przed sobą widzisz szczupłego księdza.</p>
+<p><i>- Wszystko w porządku, synu?</i></p>
+<br><p><i>- Nie, nic nie jest w porządku, ojcze.</i> – Opowiadasz mu wszystko co Ci się dziś przytrafiło. <button class="b0" data-np="45">[045]</button></p>
+<p><i>− Ależ tak oczywiście.</i> – Dusisz w sobie to wszystko, co się dziś przydarzyło. <button class="b0" data-np="46">[046]</button>.</p>
+</div>
+
+<div id="p44">
+<p class="pr">44</p>
+<p>Niewiele pamiętasz… Doskonale manewrował między gałęziami i w końcu rzucił się na Ciebie z góry… Cierpienie, ból… wiedza, zbyt duża wiedza o cierpieniu, niesprawiedliwości na tym świecie…</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="38">[038]</button>.</p>
+</div>
+
+<div id="p45">
+<p class="pr">45</p>
+<p>Opowiadasz o wszystkim, co dziś Cię spotkało. Ksiądz w zrozumieniu kiwa głową. Kiedy kończysz opowieść o ucieczce przed czerwoną, demoniczną istotą, jesteś pewien, że ksiądz nazwie Cię szaleńcem. Tak się jednak nie stało.</p>
+<p><i>- Sinis Dei.</i></p>
+<p><i>- Co proszę?</i></p>
+<p><i>- Sinis Dei, Małpa Boga. Innymi słowy, szatan. Szatan cię dręczy moje dziecko.</i></p>
+<p><i>- Szatan… przecież to prędzej brzmi jak szaleństwo niż opętanie. Ojcze, ludzie nie zmieniają się w demony. Demony nie są przebranymi ludźmi.</i></p>
+<p><i>- Tak, ale demony mogą wnikać do ludzkiej duszy, kusić ją lub nawet zmuszać do popełniania niecnych czynów. Moc zaglądania w dusze, którą uzyskałeś, pochodzić musi od złego. Nie pokazuje ci on dobrych czynów, lecz tylko złe i plugawe oblicze ich życia… Świat przed twymi oczami staje się niewyraźny…</i></p>
+<div class="wiz"><p>Dzieci na plebanii i on biorący je na kolana. Pożądanie bijące od księdza, kiedy czuje je na sobie i gładzi swoją chudą dłonią ich ciała… Stara się to robić tak, by nie wzbudzić żadnych podejrzeń…</p></div>
+<p>Nie! Dość tych okropieństw. Nie musisz patrzeć na coś tak obrzydliwego.</p>
+<p><i>- Więc musisz zrozumieć</i> – kontynuuje dalej ksiądz, który widocznie nie zauważył Twojej chwilowej nieuwagi – <i>że demony czasem mają moc uzdrawiania, a nawet moc ratowania życia. Dawniej wielką plagą były wszelakie kulty satanistyczno-pogańskie na Syberii. Dziś nazywa się to szamanizmem, new age czy innymi fałszywymi imionami. Jeśli nawet dochodziło tam do uzdrowień, to cóż to dawało, gdy dusza była stracona?</i></p>
+<p>Skóra księdza czerwienieje. Zauważasz także, że jego oczy zamieniają się w dwie czarne otchłanie, z których słyszysz jakby stłumiony płacz dzieci.</p>
+<p><i>- Dlatego moje dziecko, musisz poddać się egzorcyzmom i wyrzec się swojego daru, tak jak demona, który cię dręczy. Czy jesteś na to gotowy?</i></p>
+<br><p><i>- Tak.</i> - Poddajesz się egzorcyzmom. <button class="b0" data-np="47">[047]</button></p>
+<p>Ten ksiądz nie jest dobry. Wybiegasz z kościoła innym wyjściem. <button class="b0" data-np="48">[048]</button></p>
+</div>
+
+<div id="p46">
+<p class="pr">46</p>
+<p><i>Wszystko w porządku ojcze, wszystko w porządku… wszystko w porządku… wszystko w porządku… wszystko w porządku… wszystko w porządku… wszystko w porządku…</i></p>
+<br><p>Wybuchasz płaczem, wypadasz z ławki jakby ktoś Cię wypchnął i przyjmujesz pozycję embrionalną. Trzęsiesz się cały i płaczesz…</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="38">[038]</button>.</p>
+</div>
+
+<div id="p47">
+<p class="pr">47</p>
+<p>Ksiądz uprzedził Cię, że rytuał, który odprawia, czyni poniekąd nielegalnie; normalnie potrzebne jest zezwolenie biskupa, często zasięga się też opinii psychologa bądź psychiatry. Nie mógł jednak patrzeć na Twoje cierpienie, które z pewnością ciągle by się wzmagało. Mimo, iż próbował (co także było niecodzienne, SAM próbował bez jakichkolwiek pomocników) przez ponad godzinę uzyskać imię demona, który Cię dręczy, nie udało mu się to. Ale z pewnością miałeś w sobie demona! – przecież tak okropny obraz księdza jaki widziałeś, z pewnością nie był prawdziwy!</p>
+<p>Egzorcyzmy trwały prawie trzy godziny. I tak, jak się dowiedziałeś, był to sukces, że w takim krótkim czasie udało się je ukończyć. Ksiądz nawet nie musiał odwołać mszy popołudniowej! Modlitwy do Michała Archanioła, litania do świętych, na koniec wyrzekłeś się szatana i wszystkiego co do zła prowadzić Cię mogło, wyznałeś swoją wiarę w Boga i Kościół, wyspowiadałeś się i przyjąłeś Eucharystię. Nie tak wyobrażałeś sobie prawdziwy egzorcyzm, no ale cóż… chyba zadziałało. Potrafiłeś odegnać demona, który narzucał takie wizje. </p>
+<p>Zostałeś na mszy popołudniowej.</p>
+<p>Nie straciłeś pracy – Bóg Cię nie opuścił. Zacząłeś codziennie chodzić do Kościoła na mszę o 6:00. Co jakiś czas wizje próbowały się pojawić, ale potrafiłeś sobie bez większego problemu z nimi poradzić</p>
+<p>Tak, Kościół pomógł Ci wygrać z szatanem…</p>
+<br><p>Koniec.</p>
+</div>
+
+<div id="p48">
+<p class="pr">48</p>
+<p>Zrywasz się na równe nogi i wybiegasz czym prędzej z kościoła. Przy bocznych drzwiach oglądasz się za siebie i widzisz, że klecha biegnie za Tobą. Z jego głowy wyrastają płonące węże, które, sycząc z bólu, zdają się patrzeć z nienawiścią w Twoje oczy… Przeraźliwy płacz dzieci wydobywa się z czarnych niczym najgłębsze otchłanie oczodołów. Wybiegasz stamtąd, byle jak najdalej od tego człowieka… czy raczej tej istoty.</p>
+<p>Jesteś znów na zewnątrz.</p>
+<p>Słyszysz przeraźliwy pisk nad sobą. Unosisz głowę i widzisz tę samą demoniczną istotę, która zagnała Cię do tej świątyni. Rzuca się do ataku. Widzisz jej gorejące, czerwone oczy, szponiaste odnóża nieuchronnie zbliżające się do Twojego ciała…</p>
+<p>I nagle słyszysz silny, basowy głos nieopodal:</p>
+<p><i>- Odejdź! Odejdź natrętna istoto! Odejdź! Któż pozwolił ci zaatakować tego młodego adepta?! Odejdź i powiedz swojemu panu, że on nie chce być pod jego mocą.</i></p>
+<p>Patrzysz w tamtą stronę i widzisz starszego człowieka. Ubrany jest w czarne sztruksy i jasną dżinsową kurtkę. W ręce dzierży pełną dziwnych żłobień laskę, którą teraz trzyma wysoko, kierując ją w stronę tamtej istoty. Ona zawisa w powietrzu, trzy metry nad ziemią i zdaje się odpowiadać swoim skrzeczącym, piskliwym głosem w języku, którego nie jesteś w stanie ani zrozumieć, ani przyrównać do jakiejkolwiek ludzkiej mowy jaką znasz.</p>
+<p><i>- To nie ma znaczenia! Powiedz Erlikowi, że nie może go pojmać, gdyż jest mi potrzebny. Tak, wielki, czarny pan na pewno poradzi sobie bez niego. A teraz nie trać już mojego czasu, ale leć i czyń to, co ci kazałem. Nie masz już władzy nad tym człowiekiem.</i></p>
+<p>Demon wzlatuje nieznacznie wzwyż… i z całym impetem pikuje w stronę ziemi. Uderzył tuż obok Ciebie i zniknął pod powierzchnią brukowanego chodnika.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="49">[049]</button>.</p>
+</div>
+
+<div id="p49">
+<p class="pr">49</p>
+<p><i>- Witaj, mój drogi uczniu. Mniemam, że dostałeś tą krótką wiadomość, jaką moi posłańcy ci zostawili. Cieszę się, że w końcu cię znalazłem… i to w dniu, kiedy ujawniła się twoja moc… Heh, to ci dopiero dopust losu. Rozumiem, że możesz być lekko zszokowany, to normalne. Ba! Cieszę się, że nie utraciłeś zmysłów! Wiesz, niektórzy ludzie, kiedy widzą rzeczy, o których nie mieli wcześniej pojęcia albo wariują, albo wypierają się swojej mocy. Cieszę się, że żadna z tych niepewnych dróg nie była twoją.</i></p>
+<p>Staruszek podchodzi do Ciebie i dłońmi obejmuje Twoje skronie. Zamyka oczy, marszczy czoło, zaciska usta, w końcu puszcza Cię.</p>
+<p><i>- Oho! Widzę, że dzień był dla ciebie pełen gwałtownych wydarzeń. Ech… ta codzienność życia w mieście. Dawniej było to łatwiejsze, no ale cóż. Czas nam w drogę.</i></p>
+<br><p><i>Ale o co w tym wszystkim chodzi? Co się ze mną dzieje? Co to wszystko miało znaczyć: ten list, ten dzień, te „demony”?</i> <button class="b0" data-np="50">[050]</button></p>
+<p>Idziesz za tym starszym człowiekiem bez zadawania pytań. <button class="b0" data-np="51">[051]</button></p>
+<p><i>To jakaś pułapka. Siłom demonicznym nie udało się zdobyć mnie w bezpośredni sposób, więc teraz próbują tego.</i> <button class="b0" data-np="52">[052]</button></p>
+</div>
+
+<div id="p50">
+<p class="pr">50</p>
+<p><i>– Ach tak! No cóż… rzeczywiście młody adepcie, należą ci się wyjaśnienia. Hę… Niech pomyślę od czego zacząć. Otóż może zauważyłeś…. nie, to będzie zbyt tendencyjne… Hmmm…</i></p>
+<p><i>– Młody Adepcie, zostałeś naznaczony pięknym darem. Posiadasz moc. Dziś rano, tuż po moim liście, zacząłeś ją zauważać. Jeszcze nie potrafiłeś z niej korzystać (to nawet w miarę zabawnie wyglądało, jakby ona próbowała korzystać z ciebie, he he), lecz stopniowo ją okiełznywałeś. Głupcy nazywają ten dar przekleństwem i starają się go pozbyć. Ech… jak kto woli. Moc można odrzucić, a czemuż nie? Przekleństwem może wydawać się to, iż otworzył ci się nowy zmysł, nowy wzrok. To przez niego widzisz te demony, które czasem lęgną się bądź pomieszkują w duszy ludzkiej. Nie daj się zwieść młody adepcie, one nie są fizyczne, choć potrafią zrobić nam krzywdę – skrzywdzić nasz umysł. Dopiero gdy zajrzałem w twoje wspomnienia, zrozumiałem, jak „widziałeś” tę istotę, która próbowała zaatakować nas z powietrza. Bo widzisz, nasz mózg nie jest w stanie inaczej dostrzegać te istoty jak na dwa sposoby: intuicyjnie wyczuć (jednak jest to metoda niepewna, zwykła fobia może nam narzucić, że coś czujemy, kiedy tak naprawdę tak nie jest) bądź pokazywać je, kreując wizje, które sięgają do odpowiednich skojarzeń w naszym umyśle. Tak, wiem, jest to trochę niezrozumiałe… Jest to takie jakby szaleństwo i jednocześnie możliwość dostrzegania tego, co wpływa na ten świat, a jednocześnie jest dla niego niewidoczne. Na przykład: ty widziałeś tę istotę jako czerwoną, czemu nie? Twój umysł sięgnął do archetypowych skojarzeń z twojej głębi. Czerwony to kolor krwi i kolor trujących zwierząt w przyrodzie – a więc kolor cierpienia i wielkiego niebezpieczeństwa. I dobrze twój umysł poradził sobie z tą istotą! Mogła ona przyprawić cię o szaleństwo, tak, że do końca tego życia nie potrafiłbyś się odnaleźć w swojej duszy. Ja z kolei widziałem tę istotę, jako czarną i brudną od ziemi, czując od niej trupie zimno. Mój umysł pokazał mi ją w ten sposób, gdyż pochodzi ona od pana podziemi, pana pewnej krainy „umarłych”. Skojarzył ją z ziemią – stąd brud i czarny kolor, kraina… powiedzmy „umarłych” – stąd trupie zimno.</i></p>
+<p><i>– Nie wiadomo od jak dawna pojawiają się ludzie mający moc. Nie wiadomo nawet, czy rzeczywiście jest to cecha wybranych ludzi, czy wszyscy ją mają, lecz nie potrafią jej w sobie rozbudzić. Tak uczył mnie mój przewodnik, ja jednak sądzę, że to cecha wybranych. W każdym razie na pewno w czasach neolitycznych byli ludzie, którzy zdawali sobie sprawę ze swojej mocy i bardzo często dzięki niej starali się pomagać swoim współplemieńcom. Po dziś dzień pojawiają się oni wszędzie na świecie, czasami wyrzekają się swojej mocy, a nader często wiążą ją z manifestacją siły złego, który stara się zgubić ich duszę… ech…</i></p>
+<p><i>– Słyszałeś może o Pawle Dybale? Uznał on, iż istoty, które dały mu jego dar, tak naprawdę były diabłami i chciały go uwięzić w piekle. Cóż… mimo wszystko z tego co słyszałem, był on dobrym człowiekiem i wykorzystywał swoją moc do pomagania ludziom. Cieszę się, że ty nie wyrzekłeś się swojej.</i></p>
+<p><i>– Oho! Słyszę, jak wilk nawołuje, abyśmy kontynuowali twoją podróż. Ty nie słyszysz wilka? No cóż, pewnie twój umysł inaczej kreuje to poczucie zewu. Pianie koguta? Gwizd nadjeżdżającej kolei? Zgadłem? Nie? Zegar wybijający północ? Nie? Hmmm… ach, no tak! Ten sygnał jest dla ciebie jeszcze zbyt słaby, dlatego go nie wyczuwasz. W każdym razie, chodź ze mną mój adepcie.</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="51">[051]</button>.</p>
+</div>
+
+<div id="p51">
+<p class="pr">51</p>
+<p>Wsiadacie do tramwaju i dojeżdżacie na dworzec. Później przesiadacie się do pociągu. Jedziecie jakieś półtorej godziny, po czym wysiadacie na jakiejś opuszczonej stacji w lesie. Idziecie przez kolejne półtorej godziny pod strzelistymi koronami sosen i świerków, gdy nagle Twoim oczom ukazuje się niski, drewniany domek. Staruszek naciska klamkę i drzwi z głośnym skrzypieniem otwierają się przed Wami. Czujesz zatęchły zapach wilgoci. W mieszkaniu jest znacznie ciemniej niż na dworze. Szybko zdajesz sobie sprawę, że to przez brudne, zarośnięte pajęczynami okna.</p>
+<p><i>- Nie możemy zbytnio tracić czasu, adepcie, nie mamy go dużo. Później zwiedzisz sobie moje rozkoszne mieszkanko. Teraz idziemy do sanktuarium.</i></p>
+<p>Prowadzi Cię do kuchni. Jest tu stara szafka kuchenna, która za czasów swej świetności musiała być biała; stół, który nie wygląda zbyt solidnie; wiadro, z którego wystają kawałki drewna; i stary piecyk. Podłoga wygląda dość nietypowo, pokryta jest wielkimi płytami, niczym wykafelkowane klepisko chaty olbrzyma. Staruszek wyjmuje z szafki łom i hardo podważa jedną z płyt w podłodze. Przesuwa ją na bok i ukazuje Ci klapę, która widocznie prowadzi do zejścia gdzieś pod ziemię. Zanosi do szafki z powrotem metalowy pręt i wyciąga stamtąd dwie świece z wosku pszczelego i dwa pudełka zapałek. Chowa je do kieszeni.</p>
+<p><i>- No, mój młody, to ostatnia szansa na to, żeby się wycofać. Jeśli tam zejdziesz i poddasz się rytuałowi, będziesz musiał żyć z tym darem do końca życia i korzystać z niego tak, by siły, które ci go udostępnią, były z ciebie zadowolone (inaczej mogą się mścić, aczkolwiek możesz im się przeciwstawiać). Idziesz więc ze mną, czy postanawiasz się dla bezpieczeństwa wyrzec tego daru.</i></p>
+<br><p>Idę. <button class="b0" data-np="53">[053]</button></p> 
+<p>Nie idę. <button class="b0" data-np="54">[054]</button></p>
+</div>
+
+<div id="p52">
+<p class="pr">52</p>
+<p>Podstęp… Podstęp! PODSTĘP! Siły Tajemne zmówiły się przeciwko Tobie i demony chcą Cię zniszczyć. Nie, dopóki dychasz! Do walki o lepszy świat! Hurra!!!</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="38">[038]</button>.</p>
+</div>
+
+<div id="p53">
+<p class="pr">53</p><img style="margin:5px 15px 5px 0;" src="graf/naszyjnik.png" alt="image" width="296" height="497"/>
+<p>Pod klapą znajduje się głęboka dziura, której dna nie jesteś w stanie dostrzec i metalowa, przerdzewiała drabina. Staruszek zaczął schodzić pierwszy, Ty za nim.</p>
+<p><i>- Zamknij drzwi, adepcie.</i></p>
+<p>Niepewny tego co dalej się stanie, robisz to. Metalowa płyta opada. Teraz ogarniają Cię nieprzeniknione ciemności. Schodzisz powoli coraz niżej i niżej. Czujesz zimny dotyk szczebli drabiny. Po pewnym czasie dotykasz nierównego, litego gruntu. Staruszek zapala zapałkę, podpala jedną ze świeczek i podaje Tobie. Po chwili zapala drugą świeczkę. Szybki rzut oka ukazuje ciasną, wysoką na około dwa metry jaskinię. Jej ściany zdobią czerwone malunki zwierząt, ludzi i jakichś dziwnych istot. Niektóre są humanoidalne, inne nie przypominają niczego, co widziałeś na ziemi. Staruszek prowadzi cię dalej. Po krótkim czasie kładzie się na brzuchu, gasi świeczkę i przeczołguje się pod kamienną ścianą. Czynisz dokładnie to samo. Czujesz przeszywające zimno. Staruszek znów zapala obie świeczki. Widzisz komnatę pełną malunków ludzi przechodzących przez rzekę. O ile ludzie będący przed brodem mają barwę czerwoną, ci którzy już ją przeszli, są bezbarwni – obrysowany mają tylko kontur. Ludzie, którzy dopiero dotykają rzeki zdają się coś jeść.</p>
+<p><i>- No więc adepcie, już czas, żebyś przeszedł na drugą stronę i wrócił odmieniony, potrafiący korzystać ze swej mocy. Usiądź obok mnie. Weź te nasiona i zjedz je. - Wciska Ci do ręki kilka małych pestek. – To nasiona bielunia, twoje przejście na drugą stronę. Będziesz musiał pójść tam sam. Ja zostanę tutaj i będę pilnował twojego ciała.</i></p>
+<p>Starzec sięga w róg komnaty i podnosi stamtąd dziwny przedmiot.</p>
+<p><i>- Mój drogi adepcie. Dawniej to, co teraz trzymam w rękach, było częścią stroju pewnego wielkiego szamana. To jedyna część, jaką udało mi się zachować. Pomoże ona ci się przenieść „na drugą stronę”. Gdy połkniesz nasiona, musisz wpatrywać się w ten okrąg i słuchać mojego śpiewu. To otworzy przejście.</i></p>
+<p><i>- Zanim jednak zjesz nasiona, musisz być pewien, że jesteś czysty. Nie musisz być nieskazitelny, ale powinieneś być dobrym i zdyscyplinowanym człowiekiem. Czasami skłonnym nawet do poświęceń. Tylko tacy ludzie mają szansę stamtąd wrócić. Oczywiście, gdyby twoim przewodnikiem był człowiek służący ciemnej stronie, wtedy byłoby odwrotnie, ale ja nim nie jestem. Więc odpowiedz mi: jesteś czysty czy nie?</i></p>
+<br><p>Tak. <button class="b0" data-np="55">[055]</button></p>
+<p>Nie. <button class="b0" data-np="54">[054]</button></p>
+</div>
+
+<div id="p54">
+<p class="pr">53</p>
+<p><i>- Nie ma w takim razie innej drogi. Musisz wyrzec się tego daru. Sam możesz nie podołać próbie. Nie znam innego szamana, który mógłby ci pomóc, a sam tego nie zrobię, dlatego też spróbuj pomocy kapłana. Jest to dość ryzykowne, ale nie znam innej możliwości.</i></p>
+<p>Wracasz tą samą drogą, którą przybyłeś. Idziesz do pierwszego kościoła, który spotykasz na drodze, opowiadasz swoją historię kapłanowi i błagasz o egzorcyzm. Obraz księdza stawał się złowieszczy, lecz czułeś, że tym razem to obca siła go narzuca.</p>
+<p>Czyżby jakaś zła istota chciała wykorzystać Twoje zdolności?</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="47">[047]</button>.</p>
+</div>
+
+<div id="p55">
+<p class="pr">55</p>
+<p><i>– A więc uważasz siebie za czystego? Skoro tak, to nie ma na co czekać. Połknij nasiona.</i></p>
+<p>Czynisz to. Mają gorzkawy smak. Zgodnie z poleceniem starca wpatrujesz się w kolistą część tego dziwnego przedmiotu. Słyszysz, jak starzec śpiewa pieśń w dziwnym, obcym języku, tańcząc dookoła Ciebie.</p>
+<p>Nagle oślepiający promień światła wytryska z okręgu, który jest o wiele większy niż wtedy, gdy zobaczyłeś go pierwszy raz. Unosisz się w powietrzu i przelatujesz przez niego!</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="57">[057]</button>.</p>
+</div>
+
+<div id="p56">
+<p class="pr">56</p>
+<p><i>– Mylisz się. Więc tak obojętni byli dla ciebie ludzie, których życie nieszczęsne miałeś okazję współprzeżywać?</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="66">[066]</button>.</p>
+</div>
+
+<div id="p57">
+<p class="pr">57</p>
+<p>Gdy przeleciałeś przez krąg, widziałeś jedynie oślepiające białe światło. Nagle Twoim oczom ukazała się kolejna jaskinia, o wiele większa niż poprzednia. </p>
+<p>Przed sobą widzisz kamienną obręcz, a przed nią dwie szczupłe, okaleczone, acz olbrzymie kobiety. Ich skóra jest szara jak ściany jaskini, które Cię otaczają. Jedna z nich pozbawiona jest prawej ręki, druga zaś lewego oka.</p>
+<p>W plecy uderza Cię zimny wiatr, nasycony uczuciem tak nieprzyjemnym, że usztywnia Twoje ciałoi sprawia, że wręcz kulisz się z przerażenia. Choć nie słyszysz żadnego dźwięku, odnosisz wrażenie, że jest on przepełniony krzykiem cierpienia, agresji i niezrozumiałego, niewysłowionego bólu.</p>
+<br><p>Idziesz w stronę dwóch olbrzymich kobiet. <button class="b0" data-np="101">[101]</button></p>
+<p>Odwracasz się i idziesz w przeciwną stronę. <button class="b0" data-np="102">[102]</button></p>
+</div>
+
+<div id="p58">
+<p class="pr">58</p>
+<p><i>– Śmiały jesteś człeku. Zobaczymy, jak jest w istocie. Na początku powiedz mi, czy posiadasz bransoletę?</i></p>
+<br><p><i>- Mam bransoletę.</i> <button class="b0" data-np="59">[059]</button></p>
+<p><i>- Nie mam.</i> <button class="b0" data-np="70">[070]</button></p>
+</div>
+
+<div id="p59">
+<p class="pr">59</p>
+<p><i>- Cóż więc ona przedstawia?</i></p>
+<br><p><i>- Dwie piękne siostry takie jak wy.</i> <button class="b0" data-np="71">[071]</button></p>
+<p><i>- Kościanego niedźwiedzia i młodego orła.</i> <button class="b0" data-np="72">[072]</button></p>
+<p><i>- Dwóch braci.</i> <button class="b0" data-np="73">[073]</button></p>
+<p><i>- Trójgłowego psa.</i> <button class="b0" data-np="74">[074]</button></p>
+<p><i>- Kruka.</i> <button class="b0" data-np="75">[075]</button></p>
+<p><i>- Węże oplatające się wzajemnie a nad nimi perskiego kota.</i> <button class="b0" data-np="76">[076]</button></p>
+<p><i>- Postać z kosą.</i> <button class="b0" data-np="77">[077]</button></p>
+<p><i>- Jesteś ślepa? Przecież trzymam ją w dłoniach, głupia!</i> <button class="b0" data-np="66">[066]</button></p>
+</div>
+
+<div id="p60">
+<p class="pr">60</p>
+<p>Uwaga! Kazanie za karygodny błąd:</p>
+<div class="wiz"><p>Powiedz mi, jaki jest sens oszukiwania w jakiegokolwiek rodzaju grach, w tym grach książkowych? Przecież w ten sposób psujesz sobie zabawę. Nie starasz się stąpać w tej opowieści własną drogą, nie starasz się niczego nauczyć, a tylko oszukiwać byle skończyć przygodę, nie czuć się gorszym. A przecież polega ona na tym, by przeżywać to, co dzieje się w Twojej wyobraźni, gdy czytasz kolejny paragraf, pogodzić się ze śmiercią postaci, jeśli ona nastąpi i umieć zagrać od nowa. Spróbuj odczytać historię w taki sposób, by zdobyć tę bransoletę, a nie oszukiwać jak nieudacznik, który musi wpisywać tipsy w grach komputerowych, bo nie jest w stanie ich ukończyć normalnie; czy pajac w grach fabularnych, który zerka w notatki Mistrza Gry, po to tylko, by znając scenariusz, nudzić się na sesji, która niczym go nie zaskoczy :-/</p>
+<p>Przegrałeś/przegrałaś drogi/a kolego/koleżanko, ponieważ nie umiesz pogodzić się z konsekwencjami swoich wyborów, cieszyć się grą i przeżywać ją niczym bohater tej opowieści, którym przed chwilą byłeś/byłaś.</p>
+<p>Niestety koniec, ale spróbuj jeszcze raz, jeśli chcesz. Może moje słowa dały Ci do myślenia i czegoś Cię nauczyły.</p></div>
+<p>Po kazaniu :) Wybacz, ale to nie była dobra droga.</p>
+<br><p>Wróć do początku gry i spróbuj swoich sił jeszcze raz, ponownie czytając <a href="http://3dh.gsi.pl/gp/tajemne_oblicze_swiata/">Prolog</a>.</p>
+</div>
+
+<div id="p61">
+<p class="pr">61</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="64">[064]</button>.</p>
+</div>
+
+<div id="p62">
+<p class="pr">62</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="64">[064]</button>.</p>
+</div>
+
+<div id="p63">
+<p class="pr">63</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="64">[064]</button>.</p>
+</div>
+
+<div id="p64">
+<p class="pr">64</p>
+<p><i>– Jakimże prawem miałybyśmy cię dopuścić do mocy, skoro nawet pierwszej litery imienia człowieka nie pamiętasz, którego cierpienie wszak rzekomo współprzeżywałeś?</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="66">[066]</button>.</p>
+</div>
+
+<div id="p65">
+<p class="pr">65</p>
+<p><i>– Dobrze, jesteś godzien.</i></p>
+<p><i>- Idź dalej, nie będziemy cię zatrzymywać.</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="85">[085]</button>.</p>
+</div>
+
+<div id="p66">
+<p class="pr">66</p>
+<p>Jednoręka łapie Cię wpół, jednooka wykrzykuje jakieś zdanie w języku, którego nigdy nie słyszałeś. Rozstępuje się ziemia, a z jej czeluści wyzierają ciemnogranatowe płomienie. Już masz do nich zostać wrzucony, gdy wyrywają się z Twoich ust słowa sprawiedliwości. Jak na tak rozpaczliwą chwilę są to zdania zbyt składne i wymówione zbyt spokojnym głosem, by były zależnymi od Twojej woli.</p>
+<p><i>- Ależ tak nie można! Potępienie jest dla ludzi złych, wszetecznych, którzy nie zasłużyli sobie na nic innego, jak na doświadczenie cierpienia, które spowodowali. Czym ja sobie na taki los zasłużyłem? Może nie byłem ideałem, może nie postąpiłem rozsądnie, ale czy na pewno powinienem być na wieczyste męki skazany?</i></p>
+<p><i>- Słusznie mówisz</i> – odpowiada jednooka. – <i>Darujemy ci za to infernalną karę. Odsyłamy cię do świata, który już znasz.</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="67">[067]</button>.</p>
+</div>
+
+<div id="p67">
+<p class="pr">67</p>
+<p>Budzisz się zlany potem. To był dopiero chory sen! Oh fuck! Już siódma! Ubierasz się błyskawicznie, łapiesz suchą bułkę i dosłownie pochłaniasz ją w ciągu niecałej minuty. Myjesz zęby, ubierasz buty i wybiegasz przed dom. A to co? List?</p>
+<p>Podnosisz śliską, oszronioną kartkę i czytasz:</p>
+<div class="wiz"><p title="H. P. Lovecraft, Zew Cthulhu.">Jakimże człowiek potrafi być ignorantem… „Wydaje mi się, że największym dobrodziejstwem na tym świecie jest fakt, że umysł ludzki nie jest w stanie skorelować całej swej istoty. Żyjemy na spokojnej wyspie ignorancji, pośród mórz nieskończoności i wcale nie jest powiedziane, że w swej podróży zawędrujemy daleko.”</p>
+<p>Słowa oszalałego samotnika odbijają się w naszych wspólnych głowach. Tak naprawdę żyjemy w pełnym grozy świecie - koszmar otacza nas zewsząd, a nasza natura jest nim przesiąknięta. Płyniemy w nim, oddychamy nim, pijemy i spożywamy go. Nasze umysły bronią się przed świadomością tego przerażającego faktu, tworząc idee świata nieistniejącego, lepszego, żeby tylko odwrócić naszą uwagę od tego, który rzeczywiście zamieszkujemy. Gdybyś tylko przyjrzał się historii życia swojego przyjaciela, ojca, matki, sąsiada czy nawet pierwszej lepszej napotkanej istoty, zrozumiałbyś tak wiele… Wyraziłeś życzenie poznania prawdy, tak? Całej prawdy, tak? No dobrze, spełnię Twoją wolę w ułamku. TYLKO W UŁAMKU. Inaczej świadomość koszmaru mógłby Cię zabić, Przyjacielu.</p></div>
+<p>Przejdź do paragrafu <button class="b0" data-np="1">[001]</button>.</p>
+</div>
+
+<div id="p68">
+<p class="pr">68</p>
+<p><i>– Pamiętasz imię, a popełniasz tak nierozważny błąd? Czy naprawdę jesteś aż tak próżny i na niczym ci nie zależy? Głupcze!</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="66">[066]</button>.</p>
+</div>
+
+<div id="p69">
+<p class="pr">69</p>
+<p><i>– Plugawy psie! Tak obojętny jest tobie człowiek, z którym cierpiałeś, gdy współodczuwałeś jego życie?</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="66">[066]</button>.</p>
+</div>
+
+<div id="p70">
+<p class="pr">70</p>
+<p><i>- W takim razie powiedz mi, jak możesz być godzien? Nie masz pieczęci, więc giń!</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="66">[066]</button>.</p>
+</div>
+
+<div id="p71">
+<p class="pr">71</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="60">[060]</button>.</p>
+</div>
+
+<div id="p72">
+<p class="pr">72</p>
+<p><i>– Zgadza się! No, no. Nasz mały robaczek nie kłamie. Naprawdę ma bransoletę. Musiał dzisiaj dokonać wielkiego czynu, używając rozumu i charyzmy.</i></p>
+<p><i>- Dobrze, że trafił na podatny grunt. Jak dużo jest śmiertelników, do których można mówić i mówić, a oni i tak ciągle popełniają te same błędy i CIĄGLE narzekają, że są nieszczęśliwi. Sami sobie głupcy drwa podrzucają pod kocioł piekielny, w którym ich dusze się gotują.</i></p>
+<p><i>- No dobrze, ale powiedz, śmiertelny, na jaką literę zaczynało się imię pierwszej osoby, której dziś smutne życie poznałeś.</i></p>
+<br><p>„G”. <button class="b0" data-np="78">[078]</button></p>
+<p>„N”. <button class="b0" data-np="64">[064]</button></p>
+<p>„O”. <button class="b0" data-np="56">[056]</button></p>
+<p>„Z”. <button class="b0" data-np="63">[063]</button></p>
+<p>„A”. <button class="b0" data-np="62">[062]</button></p>
+</div>
+
+<div id="p73">
+<p class="pr">73</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="60">[060]</button>.</p>
+</div>
+
+<div id="p74">
+<p class="pr">74</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="60">[060]</button>.</p>
+</div>
+
+<div id="p75">
+<p class="pr">75</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="60">[060]</button>.</p>
+</div>
+
+<div id="p76">
+<p class="pr">76</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="60">[060]</button>.</p>
+</div>
+
+<div id="p77">
+<p class="pr">77</p>
+<p>Przejdź do paragrafu <button class="b0" data-np="60">[060]</button>.</p>
+</div>
+
+<div id="p78">
+<p class="pr">78</p>
+<p><i>- Jakie było jego imię?</i></p>
+<br><p><i>- Giedymin.</i> <button class="b0" data-np="79">[079]</button></p>
+<p><i>- Grzegorz.</i> <button class="b0" data-np="80">[080]</button></p>
+<p><i>- To była ona, Gertruda.</i> <button class="b0" data-np="81">[081]</button></p>
+</div>
+
+<div id="p79">
+<p class="pr">79</p>
+<p><i>- Do jakiej postaci ten człek nieszczęśliwy został sprowadzony przez swą tragedię życiową?</i></p>
+<br><p><i>- Narkomana bez perspektyw na dalsze życie.</i> <button class="b0" data-np="65">[065]</button></p>
+<p><i>- Bezmyślnego dresa szukającego bezpieczeństwa w swojej sile fizycznej.</i> <button class="b0" data-np="82">[082]</button></p>
+<p><i>- Samobójcy nie mającego odwagi dalej żyć.</i> <button class="b0" data-np="68">[068]</button></p>
+</div>
+
+<div id="p80">
+<p class="pr">80</p>
+<p><i>- Do jakiej postaci ten człek nieszczęśliwy został sprowadzony przez swą tragedię życiową?</i></p>
+<br><p><i>- Narkomana bez perspektyw na dalsze życie.</i> <button class="b0" data-np="69">[069]</button></p>
+<p><i>- Bezmyślnego dresa szukającego bezpieczeństwa w swojej sile fizycznej.</i> <button class="b0" data-np="83">[083]</button></p>
+<p><i>- Samobójcy nie mającego odwagi dalej żyć.</i> <button class="b0" data-np="68">[068]</button></p>
+</div>
+
+<div id="p81">
+<p class="pr">81</p>
+<p><i>- Do jakiej postaci ten człek nieszczęśliwy został sprowadzony przez swą tragedię życiową?</i></p>
+<br><p><i>- Narkomanki bez perspektyw na dalsze życie.</i> <button class="b0" data-np="87">[087]</button></p>
+<p><i>- Bezmyślnej panienki szukającej bezpieczeństwa w sile swojego chłopaka.</i> <button class="b0" data-np="84">[084]</button></p>
+<p><i>- Samobójczyni nie mającej odwagi dalej żyć.</i> <button class="b0" data-np="86">[086]</button></p>
+</div>
+
+<div id="p82">
+<p class="pr">82</p>
+<p><i>– A więc nie mogę nic innego zrobić.</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="66">[066]</button>.</p>
+</div>
+
+<div id="p83">
+<p class="pr">83</p>
+<p><i>- Co ty na to, siostro?</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="65">[065]</button>.</p>
+</div>
+
+<div id="p84">
+<p class="pr">84</p>
+<p><i>- No tak, a jakże inaczej. Oto nagroda!</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="66">[066]</button>.</p>
+</div>
+
+<div id="p85">
+<p class="pr">85</p>
+<p>Kamienny krąg zaczyna świecić czerwono-pomarańczowym światłem. Śmiało przez nie przechodzisz.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="99">[099]</button>.</p>
+</div>
+
+<div id="p86">
+<p class="pr">86</p>
+<p><i>– Biedna to jest dusza, azaliż.</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="65">[065]</button>.</p>
+</div>
+
+<div id="p87">
+<p class="pr">87</p>
+<p><i>– Skoro tak mówisz. Otworzę dla ciebie przejście.</i></p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="66">[066]</button>.</p>
+</div>
+
+<div id="p88">
+<p class="pr">88</p>
+<p><i>– Pogotowie, słucham.</i></p>
+<p>Mówisz o tym co się stało, wyolbrzymiając trochę fakty, by nie zostać zignorowanym. Dotykasz swojej skroni i widzisz, że masz całą dłoń we krwi, więc wspominasz o tym czym prędzej.</p>
+<p>Zgłoszenie zostało przyjęte.</p>
+<p>Usiadłeś na chodniku, przyciskając rękę do obolałej głowy. Nagle przykuwa Twój wzrok pewne okno w bloku naprzeciwko. Jest tam jakaś dziewczyna. Widzisz ją dość niewyraźnie. Nagle…</p>
+<div class="wiz"><p>Ma na imię Gertruda. Właśnie nałykała się tabletek i melancholijnie patrzy na zewnątrz, czekając na morderczy sen, który skończy jej hańbę, jej nędzny żywot.</p>
+<p>Widzisz szczęśliwe dzieciństwo, gdy matka czyta jej przy łóżku bajki na dobranoc. Czujesz radość i poczucie bezpieczeństwa dziecka, gdy rodzicielka całuje ją w czółko przed snem. Z ojcem dziewczyna nie miała zbyt dobrego kontaktu. Ciągle pracował – jeździł do późna jako taksówkarz. Gdy tego nie robił, oglądał telewizję. Czasem tylko zamienił z nią jakieś słowo.</p>
+<p>Teraz dostrzegasz ją starszą, gdy ze smutkiem i przerażeniem spogląda na swoją umierającą matkę. Czujesz jej strach i niewysłowione cierpienie. Wie, że jej ukochaną opiekunkę zżera rak. Ojciec coraz częściej wraca pijany. Czy on się w ogóle nie interesuje swoją żoną?</p>
+<p>Ale w tych chwilach smutku spotyka się ze swoim chłopakiem. On tak pięknie mówi o swojej miłości do niej. Jest zresztą taki silny i nieustraszony! Łysy i nie boi się krzyknąć ”Sieg heil” na ulicy. Pół dzielnicy trzęsie portkami, kiedy przechodzi obok. Śmiecie i brudasy nie mają z nim szans. Przynajmniej on tak mówi. I tak bardzo ją kocha. Czujesz jej nadzieje i szczęście, gdy jest przy nim. I to wspaniałe miłosne uniesienie gdy po raz pierwszy się z nim kochała.</p>
+<p>W momencie śmierci jej matki zostawił ją. Miała 15 lat. Stwierdził, że zrobiła się smętna, że to żadna radocha z nią chodzić i że przytyła tak, że nie można na nią patrzeć. Jak mogła być tak głupia i wierzyć w miłość takiego człowieka?! Czujesz podwójną niewysłowioną rozpacz rozdzierającą jej duszę.</p>
+<p>Ojciec już codziennie wracał do domu pijany.</p>
+<p>Czujesz jej ból, gdy obudziła się w nocy i zobaczyła swojego śmierdzącego speluną ojca, który wchodził w nią. Szarpała się i krzyczała, ale nie mogła nic zrobić, dopóki nie skończył. Czujesz jej bezradność, gdy przyjmując embrionalną pozycję, płacze po tej tragicznej nocy. Czujesz to ogromne poczucie niesprawiedliwości, które ją ogarnęło, gdy ojciec ją bił i mówił, że przecież nic takiego się nie stało.</p>
+<p>I w końcu czujesz jej rezygnację, gdy okazuje się, że jest w ciąży… i sama nie wie, czy to dziecko nazisty, który potraktował ją jak zużyty przedmiot, czy ojca-alkoholika.</p>
+<p>Czujesz jej rozpacz i determinację, gdy połknęła wszystkie tabletki, jakie znalazła w domowej apteczce.</p></div>
+<p>Cholera, co to było?</p><br>
+<p>Przyjeżdża karetka. Wysiadają sanitariusze i z niesmakiem patrzą na Twoją niewielką ranę głowy.</p>
+<br><p>Co robisz?</p><br>
+<p>Wsiadasz do karetki i jedziesz do szpitala. <button class="b0" data-np="90">[090]</button></p>
+<p><i>- Przed chwilą dzwoniła do mnie koleżanka z tamtego mieszkania i mówiła, że właśnie popełnia samobójstwo! Połknęła wszystkie tabletki, jakie ma w apteczce. To ją trzeba najpierw ratować!</i> <button class="b0" data-np="89">[089]</button></p>
+</div>
+
+<div id="p89">
+<p class="pr">89</p>
+<p>Sanitariusze na początku spojrzeli na Ciebie krzywo, szczególnie, że nie potrafiłeś podać numeru mieszkania tej dziewczyny, ale Twoje krzyki i rumor jaki robiłeś na ulicy, skutecznie nakłonił ich, aby jednak sprawdzili, czy w tamtym mieszkaniu wszystko jest w porządku. Podjechali karetką w stronę wskazanego przez Ciebie bloku.</p>
+<p>Po dziesięciu minutach zbiegają z mamroczącą coś dziewczyną na noszach.</p>
+<p><i>- Całe szczęście, że zostawiła mieszkanie otwarte. Jeszcze kilkanaście minut i byłaby martwa. Wsiadaj pan, zawieziemy was obu do szpitala</i> – rzuca sanitariusz.</p>
+<p>Wskakujesz od tyłu do karetki. Auto rusza na sygnale. Dziewczyna ciągle coś mruczy pod nosem. Nagle chwyta Cię za krawat i wciska Ci jakiś przedmiot do kieszeni spodni, po czym zupełnie traci przytomność..</p>
+<p>Wyjmujesz z kieszeni srebrną bransoletę. Po jej lewej stronie jest wyryte coś, co chyba jest ożywionym szkieletem niedźwiedzia machającego lewą łapą, po prawej zaś widać młodego orła.</p>
+<p>Wpisz tę bransoletę razem z jej opisem do swojego ekwipunku.</p>
+<p>Dojechaliście do szpitala. Sanitariusze najpierw przekazują dziewczynę na oddział intensywnej terapii, następnie prowadzą Cię w głąb szpitala. <button class="b0" data-np="90">[090]</button></p>
+</div>
+
+<div id="p90">
+<p class="pr">90</p>
+<p>W szpitalu jak zwykle widzisz pełno ludzi. Tym razem jednak ich ilość strasznie Cię przytłacza. Jest to prawie nie do zniesienia. Zaczynasz się trząść, jakby przechodziło przez Ciebie prąd o napięciu co najmniej 1000 V.</p>
+<p>Tyle, tyle problemów, tyle nieszczęść i radości na tak małej powierzchni. Dziwna myśl…</p>
+<p>O Boże, nie! Znów zaczyna kręcić Ci się w głowie. Obrazy dotyczące tych ludzi wdzierają się do twego umysłu. Ciemnieje Ci przed oczami.</p>
+<div class="wiz"><p>Zdradził mnie, choć dawałam mu wszystko, co mogłam dać.</p>
+<p>Musiałem go zabić, rzucił się przecież na moje dziecko! Głupi pies. I głupi smarkacz! Czemupłakał i powiedział, że mnie nienawidzi, kiedy to zrobiłem? Muszę się napić.</p>
+<p>Musiałam go zabić, inaczej on zabiłby mnie! Pierdolony alkoholik. Chuj i tak musiał mnie dźgnąć pod serce! I teraz siedzę w tym pierdolonym szpitalu</p>
+<p>Zdradził… zabił… zgwałcił… okradła… porwała… oszukał… głód… nędza…
+nienawiść…</p></div>
+<p>Aaaaaaaaa!!!!!!!!! Nie jesteś w stanie tego wytrzymać.</p>
+<br><p><button class="b0" data-rzut="2">Rzuć dwukrotnie monetą</button><span id="wyn90">:</span></p><br>
+<p>Jeśli dwa razy wypadła reszka, przejdź do <button class="b0" data-np="38">[038]</button>.</p>
+<p>Jeśli wypadła inna kombinacja, przejdź do <button class="b0" data-np="91">[091]</button>.</p>
+</div>
+
+<div id="p91">
+<p class="pr">91</p>
+<p>Wizje odejdźcie. Błagam, ODEJDŹCIE, powtarzasz w swojej głowie. Całą siłą woli starasz się je powstrzymać, bo czujesz, że mogą przyprawić Cię o szaleństwo. Działa… na jakiś czas działa. Te twarze ludzi… czujesz, że nie możesz tu dłużej zostać - długo nie wytrzymasz.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="92">[092]</button>.</p>
+</div>
+
+<div id="p92">
+<p class="pr">92</p>
+<p>Podchodzi do Ciebie lekarz. Lekko grubawy człowiek z uśmiechem na ustach, ubrany w sterylny biały strój.</p>
+<p><i>- Dzień dobry panu. Cóż panu dolega?</i></p>
+<div class="wiz"><p>Strzykawka, pavulon, żyła nieprzytomnego człowieka i kolejnego, i kolejnego, i kolejnego.</p>
+<p>Koperta, łapówka, darowane życie.</p>
+<p>Mowa o kopercie, brak pieniędzy, bezlitosne przekładanie operacji, śmierć.</p>
+<p>Chciwość, korupcja, śmiertelnie zimne wyrachowanie…</p></div>
+<p>Nagle widzisz jak ciało lekarza na Twoich oczach zmienia się w COŚ innego. Jego twarz całkiem czerwienieje, oczy robią się czarne jak u psa, policzki stają się wklęsłe, a broda wydłuża się do przodu do tego stopnia, że teraz twarz tego człowieka z profilu przypomina odwrócony hak. Nagle wstaje i jego fartuch zostaje rozerwany przez czerwone błoniaste skrzydła. Unosi się na nich w powietrzu i RZUCA SIĘ w TWOJĄ STRONĘ.</p>
+<br>
+<p>Uciekam. <button class="b0" data-np="93">[093]</button></p>
+<p>Zostaję i próbuję podjąć walkę. <button class="b0" data-np="41">[041]</button></p>
+<p>Zostaję i próbuję porozmawiać. <button class="b0" data-np="42">[042]</button></p>
+<p>Zostaję i czekam na dalszy bieg wydarzeń. <button class="b0" data-np="38">[038]</button></p>
+</div>
+
+<div id="p93">
+<p class="pr">93</p>
+<p>Zrywasz się z miejsca i uciekasz ze szpitala tak szybko, jak tylko się da. Biegniesz po schodach, otwierasz drzwi i jesteś już na ulicy. Biegniesz dalej! Prosto przed siebie. Obracasz się. O nie! On dalej za Tobą leci! Kontynuujesz ucieczkę. Przed Tobą wyłania się stary gotycki kościół.</p>
+<br><p>Wbiegasz do niego. <button class="b0" data-np="43">[043]</button></p> 
+<p>Omijasz go i kierujesz się w stronę parku, starając się zgubić TO COŚ między koronami drzew. <button class="b0" data-np="44">[044]</button></p>
+</div>
+
+<div id="p94">
+<p class="pr">94</p>
+<p>Całe szczęście koło przystanków autobusowych i tramwajowych zawsze przejeżdżają wolne taksówki, żeby zabrać te niedorajdy, które nie zdążyły na ostatni publiczny środek transportu, który zawiózłby je na czas do miejsca pracy. Niestety to kosztuje. No cóż… znów będzie trzeba zacisnąć pasa.</p>
+<p>Przechodzisz na przystanek autobusowy, który był niedaleko tramwajowego. Dajesz znać kierowcy taksówki. Ten podjeżdża. Otwierasz drzwiczki i wsiadasz na przednie siedzenie.</p>
+<p><i>- Dokąd szefie?</i></p>
+<p><i>- Do najbliższego szpitala.</i></p>
+<p><i>- Jasne. Kurka wodna, pechowy dziś dzień, co nie?</i> – Zastanawiasz się, o co mu chodzi, lecz po chwili rozumiesz, że mówi to patrząc na Twoją ranę.</p>
+<p>O nie! Znów ten znajomy zawrót głowy.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="28">[028]</button>.</p>
+</div>
+
+<div id="p95">
+<p class="pr">95</p>
+<p>A więc ten taksówkarz jest zboczeńcem, który wykorzystuje seksualnie swoją córkę! A może nie? Może to Ty szalejesz? Od kiedy poszedłeś do tej pracy, ciągle działasz na wysokich obrotach. Może to przemęczenie.</p>
+<p>Koło skrzyni biegów leży nóż sprężynowy. Niezbyt dobre miejsce do trzymania broni. Przecież pasażer może ją złapać i zaatakować kierowcę…</p>
+<p>Pod lusterkiem wisi znaczek ze św. Krzysztofem. Ciekawe czy ten zboczeniec wie, że w czasie II Soboru Watykańskiego św. Krzysztof został zdegradowany i prawdopodobnie jest schrystianizowaną wersję pewnego bliskowschodniego bóstwa, najpewniej Anubisa. Mimo to, może ten potwór jest w jakimś stopniu religijny. Ale czy ktoś taki może być religijny?</p>
+<br><p>Czekasz, aż dojedziesz do szpitala, zabierasz nóż i próbujesz błyskawicznie zabić kierowcę. <button class="b0" data-np="97">[097]</button></p>
+<p>Korzystasz z tego wątłego śladu, świadczącego o jego domniemanej religijności. Udajesz boskiego wysłannika i próbujesz przemówić do jego sumienia. <button class="b0" data-np="33">[033]</button></p>
+<p>Olewasz to i jedziesz po prostu do pracy. Kto wie, może coś szwankuje w Twojej głowie, a nie spieszy Ci się na wakacje w szpitalu dla psychicznie i nerwowo chorych. Po prostu cierpliwie czekasz, aż dojedziecie do szpitala i starasz się zachowywać, jakby nic się nie stało. <button class="b0" data-np="96">[096]</button></p>
+</div>
+
+<div id="p96">
+<p class="pr">96</p>
+<p>Dojechaliście do szpitala, zapłaciłeś 23 zł i udajesz się w stronę miejsca, gdzie ktoś może udzielić Ci pomocy.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="90">[090]</button>.</p>
+</div>
+
+<div id="p97">
+<p class="pr">97</p>
+<p>Dojeżdżacie na miejsce. Jak miło, że szpital jest obok, gdyby Ci się nie udało i doznałbyś jakiegoś uszczerbku na zdrowiu. Czas zlikwidować pewne ścierwo.</p>
+<p><i>- 23 zł, szefie</i> – powiedział. Dałeś 50. Włożył rękę do kieszeni, żeby wyciągnąć resztę dla Ciebie. TERAZ!</p>
+<p>Sięgasz błyskawicznie po nóż.</p>
+<br><p><button class="b0" data-rzut="1">Rzuć monetą</button><span id="wyn97">:</span></p><br>
+<p>Jeśli wypadł orzeł, przejdź do paragrafu <button class="b0" data-np="98">[098]</button>.</p>
+<p>Jeśli wypadła reszka, przejdź do paragrafu <button class="b0" data-np="32">[032]</button>.</p>
+</div>
+
+<div id="p98">
+<p class="pr">98</p>
+<p>Złapałeś nóż, brzęknęło wyskakujące ostrze i zanim zdążył jakkolwiek zareagować zanurzyłeś je w jego krtani. Krew poczęła tryskać krótkimi, jasnymi strumieniami, zabrudzającymi jego szyję.. Charcząc, złapał Cię za poły płaszcza i zajrzał głęboko w oczy. Jego ślepia, pełne rozpaczy i goryczy, zdawały się pytać: <i>Dlaczego?</i></p>
+<p><i>- Bo jesteś pierdolonym córkojebcą</i> – odpowiedziałeś zimno i oschle.</p>
+<p>Jego ciało zsunęło się w dół, na skrzynię biegów.</p>
+<p>Ręce masz brudne od krwi, a na Twoim płaszczu jest kilka małych plamek. Na tylnym siedzeniu widzisz paczkę chusteczek higienicznych… trudno, będzie musiało wystarczyć. Wycierasz starannie ręce i próbujesz wyczyścić plamki na ubraniu. Ręce masz już czyste, ale krew na materiale nie daje się zetrzeć. No trudno, i tak jest prawie niewidoczna. Wychodzisz z taksówki i idziesz w stronę szpitala.</p>
+<p>Gdy tylko wszedłeś na teren budynku, dwaj ochroniarze od razu mieli Cię na muszce. Ktoś musiał przyuważyć Twoją akcję.</p>
+<p>Wiesz, że nie masz szans, więc pokornie klękasz, gdy ochroniarze każą Ci to zrobić. Ręce składasz z tyłu, by mogli skuć Cię kajdankami.</p>
+<p>Ech… Córka taksówkarza nie potwierdziła, że była molestowana… może miała na to wpływ jej babcia, siedząca niedaleko na sali sądowej?</p>
+<p>Dostałeś 8 lat… to niewiele jak za zabójstwo. Z niezrozumiałych przyczyn zostałeś uznany za poczytalnego.</p>
+<br><p>Niestety, na tej niesprawiedliwości kończy się Twa przygoda.</p>
+<p>Żegnaj!</p>
+<br><p>Wróć do początku gry i spróbuj swoich sił jeszcze raz, ponownie czytając <a href="http://3dh.gsi.pl/gp/tajemne_oblicze_swiata/">Prolog</a>.</p>
+</div>
+
+<div id="p99">
+<p class="pr">99</p>
+<p>Twoim oczom ukazuje się miejsce kaźni! Ściany pokryte są krwią i... rozkawałkowanymi ciałami. Pośrodku stoi metalowe łoże a pod nim łańcuchy z kajdanami Komnatę oświetla pięć pochodni przymocowanych do ścian: jedna naprzeciw Ciebie, dwie po lewej i dwie po prawej stronie.</p>
+<p>Ktoś chwyta Cię za kark.</p>
+<p><i>- Witaj młody adepcie. Pokonałeś wiele trudności, aby tu dotrzeć... Czas zacząć twoją inicjację.</i></p>
+<p>Czujesz się jak sparaliżowany. Próbujesz poruszyć się, ale nagle zrobiłeś się strasznie słaby, jakby ktoś związał Cię kokonem ważącym tonę. </p>
+<p>Istota, układa Cię na metalowym łożu, obraca i nagle inne mniejsze stworzenia wyskakujące spod Ciebie błyskawicznie zakuwają Twe kończyny w kajdany.</p>
+<p><i>- A więc udało się, odważnie zstąpiłeś do podziemi, ukazałeś swą mądrość i chęć niesienie pomocy innym. Ciężka to będzie dla ciebie nagroda.</i> – Istota ta, mimo że humanoidalna, jest większa niż jakikolwiek człowiek, którego widziałeś. Skóra jego jest zgniłozielona, twarz przypomina pysk szakala, ręce zaś zwieńczone są długimi i ostrymi jak brzytwa pazurami.</p>
+<p>Podchodzi do Ciebie i powolnym ruchem przykłada palec do Twojej szyi. Czujesz, jak niewidoczne ostrze zagłębia się w skórze, przecina gardła – dusisz się, ból jest palący, nie do zniesienie, charczysz, plując krwią... lecz ciągle żyjesz. Gdy dochodzi do rozerwania kręgów, Twoja świadomość ukazuje Ci wizje płynnego ognia, trawiącego każdy kawałek jaźni. Dochodzi Cię ledwo słyszalny śpiew z oddal. <i>On nadchodzi, on nadchodzi! Jesteśmy zgubieni, rzeczywistość stanie na krawędzi!</i> Wizja znika; potwór bierze Twoją głowę i kładzie ją na półce skalnej tak, że doskonale możesz widzieć, co będzie się dziać z Twoim ciałem… tak, nie umarłeś i raczej szybko to nie nastąp.</p>
+<p>Widzisz, jak mniejsze istoty, który mogłyby sięgać Ci do kolan, kształtem przypominające bestię, która Cię schwytała, odcinają Ci kończyny. Mimo iż biologicznie i fizycznie jest to niemożliwe, czujesz niewyobrażalny ból, gdy powoli, jakby sycąc się Twym bólem, odcinają Ci nogi i ręce. Twój korpus ocieka krwią. Łzy bólu szklą oczy, zamazując obraz przed Tobą.</p>
+<p>Nagle cztery małe bestie niczym wygłodniałe wilki rzucają się na mięso z Twoich kończyn. Szarpią wściekle, a jego kawałki pryskają na ściany. Czujesz ogromny, niewyobrażalnie żrący ból. Krzyczałbyś, gdybyś mógł nabrać powietrza w płuca.</p>
+<p>Największy demon chwyta korpus i pazurami zdziera mięso ze skórą. Mimo agonii, nie jesteś oszołomiony – ciągle możesz logicznie myśleć. Zauważasz wszak, że żadna z istot mięsa nie połyka. Czyżby ta pseudo-uczta istniała tylko po to, by Cię torturować?</p>
+<p>Męki trwają aż do momentu, gdy kości są całkiem nagie, obdarte z mięsa, a jedynie narządy znajdują się dalej na swoich miejscach.</p>
+<p>Jesteś tak umęczony, że marzysz tylko o omdleniu, które mogłoby przynieść Ci ulgę. </p>
+<p>Jednak nie jest to możliwe… Nie tutaj.</p>
+<p>Jedna z mniejszych istot przynosi kamienne wiadro. Nabiera w dłonie ciecz, która jest w środku i smaruje nimi Twoje kolana – czujesz w tych miejscach żywy ogień. Widzisz, jak kości w tamtym miejscu czernieją. O nie! To płynny metal. Ta istota to samo robi z Twoimi łokciami.</p>
+<p>Następnie największa z bestii wyjmuje Twoje serce i zanurza je w naczyniu, które stało za łożem. Wkłada je na miejsce, a następnie wyjmuje sztylet i przekuwa nim je.</p>
+<p><i>- To po to, byś współczuł ludziom cierpiącym, a tylko tacy zamieszkują twój świat.</i></p>
+<p>Następnie podchodzi do Twojej głowy. Czujesz okropny ból jakby ktoś rozcinał Ci czaszkę… i tak rzeczywiście jest. Zszokowany patrzysz, jak ta istota zanurza w naczyniu także Twój mózg!</p>
+<p><i>- To po to, by twój umysł był bystry i przeszywał na wylot dusze ludzi, gdy tego tylko będziesz chciał. Rób to jedynie po to, by im pomóc! Nie nadużywaj mocy. Nie po to dana ci została.</i></p>
+<p>Demon podchodzi do Ciebie i odkłada narząd na miejsce. Następnie wyciąga Twoje oczy, ogląda je i mówi:</p>
+<p><i>- Wprawdzie te oczy widzą już dusze, lecz są zbyt samowolne. Zanurzam je jeszcze raz (gdy to czyni, widzisz krwawą substancję w którą jesteś zanurzany), by bardziej woli były podporządkowane.</i></p>
+<p>Istota umieszcza gałki w oczodołach, następnie bierze głowę, którą przykłada ponownie do korpusu. Wszystkie istoty w tej jaskini, biorą się za ponowne przylepianie mięśnie do Twoich kości. Następnie rurkami wdmuchują w żyły niebieskawą substancję zamiast krwi. Naczelny demon, mistrz ceremonii, umieszcza kryształ obok Twojego serca.</p>
+<p><i>- Czynię to, abyś mógł więcej znosić niż normalni ludzie. By twoje serce, nie będąc zatwardziałym, więcej ludzkich cierpień wytrzymywało niż przeciętny mieszkaniec świata ziemskiego potrafi.. skóra</i></p>
+<p>Niczym ubranie zostaje wciągnięta na Ciebie. Wygląda jakby była niczym nienaruszona, nie licząc blizny, którą masz w miejscu, gdzie umiejscowiony jest kryształ.</p>
+<p>Zostajesz rozkuty z łańcuchów.</p>
+<p><i>- Teraz adepcie, masz ciało i moce szamana. Musisz się jeszcze wiele nauczyć i lekcje dostaniesz. Póki co, wracaj do swego świata i czekaj na znak, aż czas nadejdzie by siły twe wzmacniać.</i></p>
+<p>Wstajesz i instynktownie dziękujesz mistrzowi ceremonii. Mimo mąk, przez które przebrnąłeś, teraz czujesz się inny, silniejszy, potężniejszy. To jest słuszne. Nie wiesz skąd, ale to wiesz.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="100">[100]</button>.</p>
+</div>
+
+<div id="p100">
+<p class="pr">100</p>
+<p>Budzisz się w jaskini pod domem starca, tu gdzie rozpoczęła się Twa wyprawa w zaświaty.</p>
+<p><i>- Gratuluję ci adepcie. Masz już szamańską moc. Niebawem nadejdzie czas na pierwsze lekcje dotyczące twojej nowej drogi życia.</i></p>
+<p><i>- Teraz zaś napij się wody. Twoje ciało jest strasznie wyczerpane. W końcu leżałeś tu trzy dni i trzy noce! Za pół godziny będziesz mógł coś zjeść. Owiń się w koc, który ci przyniosłem. Woda na herbatę już się gotuje.</i></p>
+<p><i>- Jesteś dzielnym człowiekiem, adepcie. Udało ci się!</i></p>
+<br><p>Część druga i trzecia ukażą się niebawem...</p>
+<p>Szukaj o nich informacji na stronie <a href="http://masz-wybor.com.pl/">www.masz-wybor.com.pl</a>.</p>
+</div>
+
+<div id="p101">
+<p class="pr">101</p>
+<p>Dwie olbrzymie kobiety odwracają się w Twoją stronę. Jedna z nich upiornie się uśmiecha, druga marszczy jedyną brew, jaką posiada.</p>
+<p><i>- Zobacz, któż to nas odwiedził!</i> – powiedziała jednooka.</p>
+<p><i>- Ha! Kolejny adept. Myślisz, że jest godzien pójść do „kuźni”?</i> – odpowiedziała jednoręka.</p>
+<p><i>- Nie wiem, trzeba go sprawdzić. No, mój drogi mały śmiertelniku, jak myślisz, jesteś godzien, czy od razu mamy zrzucić cię na wieczyste kaźnie?</i></p>
+<br><p><i>- Jestem godzien.</i> <button class="b0" data-np="58">[058]</button></p>
+<p><i>- Eeee… po dłuższym namyśle chyba nie bardzo.</i> <button class="b0" data-np="66">[066]</button></p>
+</div>
+
+<div id="p102">
+<p class="pr">102</p>
+<p>Przed Tobą jest ciemność, otchłań, której wizualny brak zdaje się być gęsty jak smoła. Przesuwasz swoją rękę w jej stronę i nie czujesz niczego poza przenikliwym zimnem. Słyszysz, jak coś jęczącym, nieprzyjemnym, pełnym cierpienia głosem woła cicho Twoje imię.</p>
+<br><p>Odwracasz się ponownie i idziesz w stronę sióstr. <button class="b0" data-np="101">[101]</button></p>
+<p>Wchodzisz w ciemność. <button class="b0" data-np="103">[103]</button></p>
+</div>
+
+<div id="p103">
+<p class="pr">103</p>
+<p>Wchodzisz w otchłań pełną braku - braku światła, braku ciepła, braku szczęścia, zrozumienia. Twój umysł rozprasza się, pozostaje tylko jedna myśl – iść dalej, przejść przez to. Obok Ciebie pojawia się widmowa, ledwo widoczna postać grubego jegomościa ubranego w garnitur i palącego cygaro, którego połowa jest już spalano, lecz od całości nie odpadł popiół. Ten pochylił głowę i przeszył Ciebie przenikliwym wzrokiem. <i>Kiedy idziesz przez piekło, pamiętaj tylko o jednym... nie zatrzymuj się.</i> Przechodzisz obok niego i zmierzasz dalej.</p>
+<p>Przestajesz odczuwać zimno, przestajesz odczuwać swoje astralne ciało, jesteś świadomością, która już nie idzie, a mknie w wir podziemnego świata. Przed Tobą pojawia się jakby przykryta mgłą postać chudego jegomościa, wysokiego, z pociągłą twarzą, zaciśniętymi pięściami, zaciśniętymi ustami i oczami pełnymi łez. Mknie w tym samym tempie co Ty. Wtem pojawia się przed nim gnijąca i pełna robaków pierś kobiety, której postaci nie dostrzegasz, i ssąc ją, syczy słowa: <i>Na dole, zanim pojawiła się jakakolwiek żywa istota... Zamyśleni, zamyśleni, zamyśleni! Lud, półludzie, półgady... Martwi, którzy idą, idą... Och, te bestie! Stare, stare, stare, starsze niż czas... Zstępują z gwiazd... czekają, czekają...</i> Dostrzegł Cię. Odrywa się od piersi i odwraca swoją twarz, będącą uosobieniem bólu, w Twoją stronę.</p>
+<p><i>- Walker umarł podczas tortur</i> – odrzekł i patrzy się na Ciebie, jakby czekał, aż zrozumiesz. <i>- Jeśli chodzi o Walkera i o mnie – zostaliśmy zabrani do do czegoś, co było pomieszczeniem wszystkich czasów ginących i stających się znowu... Cały świat ZEWNĘTRZNY jest bezsilny wobec tego, co ONI mogą...</i> - Nagle podnosi głos i krzyczy przez zaciśnięte gardło <i>– O tym, co mogą zrobić, nie można mówić! Zaklinam Cię – nie możesz mówić, jakie to jest wielkie...</i></p>
+<p>Z ciemności znów wyłoniła się zgniła, teraz już zielono-szara pierś, która potrąciła martwą brodawką twarz chudego jegomościa. Ten znów zaczął ją ssać, z jego ust skapuje cuchnąca ropa jakby niemożliwej już do wyleczenia rany.</p>
+<p title="Wszystkie słowa wypowiedziane przez chudego jegomościa są cytatami ze Wzgórza autorsrwa Zealii Brow (Reed) Bishop i Howarda Phillipsa Lovecrafta w przekładzie Andrzeja Ledwożywa."><i>- W czasie sekcji stwierdzono, że wszystkie narządy młodego Claya były przemieszczone z prawa na lewo, jakby został przenicowany. Nikt nie mógł powiedzieć w tym czasie, czy tak było zawsze, lecz później dowiedziano się z dokumentów wojskowych, że Ed był doskonale normalny, gdy został zmobilizowany w maju 1919 roku. Czy nastąpiła gdzieś jakaś pomyłka... czy zaszła jakaś niesłychana metamorfoza, pozostało kwestią nierozwiązaną, podobnie jak jego znak na czole...3</i></p>
+<p>Twój rozmówca zaczął się krztusić. Z jego ust wypływa powoli biała cuchnąca ropa i żółć, zalewając jego brodę. Jego postać poczęła niknąć, aż zupełnie stała się niewidoczna.</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="104">[104]</button>.</p>
+</div>
+
+<div id="p104">
+<p class="pr">104</p>
+<p>Czujesz, że umierasz. Twoja świadomość dotarła do czegoś, co jest, lecz nie można tego dostrzec. Gdzieś, jakby z tyłu Twojej głowy, dochodzi Cię świadomość, że ujrzenie tego równoznaczne jest z byciem wchłoniętym, całkowitym zatraceniem. Czujesz pulsowanie czarnego światła, jeszcze przez Ciebie niedostrzeżonego, czujesz jak kumuluje się w nim świadomość nieuchronności czegoś strasznego, czujesz jak wszystko dookoła ścieka lękiem.</p>
+<p><i>On nadchodzi... Nawet ja, Erlik, Pan Podziemnego Świata, nie jestem już bezpieczny... Koniec jest bliski... Głupcze, wiem, że tu jesteś, głupcze, wiem, jak mało rozumiesz, głupcze... wiem, jak bardzo Twa istota jest potrzebna. Tylko Ty możesz go pokonać, tylko Ty jesteś w stanie przyjąć moc, która ma szansę go zniszczyć, i rozmnożyć ją. Zrozum, ucz się, myśl, medytuj, dojdź do tego, dojrzyj do tego... zmień się...</i></p>
+<p><i>Nie waż się spojrzeć na me oblicze. Nigdy. Nawet gdy będę martwy. Jedynie katoptrycznie... chyba, że przepełni Cię moc, której nic już nie będzie w stanie pokonać. Chyba, że spotkasz tchnienie Dmamah, Nabbamę...</i></p>
+<br><p><i>Już czas. Zacznij i nie ugnij się. Pan podziemi bywa panem kłamstwa, ale teraz zaufaj mi.</i></p>
+<p>Czujesz jak coś Cię wyrzuca, przez mgnienie mikrosekundy dostrzegasz demona, który o mało Cię nie pojmał w parku...</p>
+<br><p>Przejdź do paragrafu <button class="b0" data-np="101">[101]</button>.</p>
+</div>
+
+<div id="karta"></div>
+</div>
+
+<script type="text/javascript">
+document.title='Tajemne Oblicze Świata - '+p;
+document.getElementById('p'+p).style.display='block';
+
+var elements=document.getElementsByTagName('button'),
+len=elements.length;
+for (var y=0;y<len;++y){
+if(elements[y].getAttribute('data-np')){
+elements[y].onclick=function(){zp(p,this.getAttribute('data-np'));};
+}
+if(elements[y].getAttribute('data-npa')){
+elements[y].onclick=function(){u1nw[2]=1;zp(p,this.getAttribute('data-npa'));};
+}
+if(elements[y].getAttribute('data-rzut')){
+elements[y].onclick=function(){rzut(this,this.getAttribute('data-rzut'));};
+}
+if(elements[y].getAttribute('data-walka')){
+elements[y].onclick=function(){walka(this,this.getAttribute('data-walka'));};
+}
+}
+load();
+</script>
+</body>
+</html>
