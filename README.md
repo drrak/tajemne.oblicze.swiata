@@ -1,2 +1,2 @@
 # tajemne.oblicze.swiata
-Gra paragrafowa
+Gra paragrafowa: https://drrak.github.io/tajemne.oblicze.swiata/
