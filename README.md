@@ -1,4 +1,4 @@
-# Gry paragrafowe
+# Książki/Gry paragrafowe
 
 Tajemne oblicze Świata: https://drrak.github.io/tajemne.oblicze.swiata/
 
